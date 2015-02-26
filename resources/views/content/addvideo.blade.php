@@ -1,0 +1,252 @@
+@extends('tp')
+
+@section('content')
+    <div class="innerLR spacing-x2">
+        <h3 class="">Content: Add video</h3>
+
+        <!-- Widget ---- -->
+
+        <div class="widget">
+            <!-- Widget heading -->
+            {{--<div class="widget-head">--}}
+                {{--<h4 class="heading"><a href="">add video</a></h4>--}}
+            {{--</div>--}}
+            <!-- // Widget heading END -->
+            <div class="widget-body innerAll inner-2x">
+                <form class="form-horizontal" id="addvideo-form" role="form" method="post" enctype="multipart/form-data">
+                    <div>
+                        <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Name</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="content_name" class="form-control" placeholder="content name" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Description</label>
+                        <div class="col-sm-10">
+                            <textarea type="text" name="content_description" class="form-control" placeholder="content description" required=""></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Category</label>
+                        <div class="col-sm-10">
+                            <select name="category_id">
+                                <?php foreach($categories as $key=> $cat){?>
+                                <option value="<?php echo $cat->category_id;?>"><?php echo $cat->category_name;?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Video</label>
+
+                        <div class="col-sm-10">
+                            <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
+                                <div class="input-group">
+                                    <div class="form-control col-md-3">
+                                        <i class="fa fa-file fileupload-exists"></i>
+                                        <span class="fileupload-preview"></span>
+                                    </div>
+                                                <span class="input-group-btn">
+                                                <span class="btn btn-default btn-file">
+                                                <span class="fileupload-new">Select file</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                <input type="file" name="video" class="margin-none" id="video-input" required=""/>
+                                                </span><a href="#" class="btn fileupload-exists"
+                                                          data-dismiss="fileupload">Remove</a></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                </form>
+                <div>
+                    <div id="video-wrapper" class="hidden">
+                        <video id="video-display" class="" controls></video>
+                        <img id="display-thumb" />
+                    </div>
+                </div>
+                <!-- // Table END -->
+            </div>
+        </div>
+    </div>
+
+
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-switch/assets/lib/js/bootstrap-switch.js?v=v1.0.3-rc2");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-switch/assets/custom/js/bootstrap-switch.init.js?v=v1.0.3-rc2");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/fuelux-checkbox/fuelux-checkbox.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+
+    <script src="<?php echo URL::to("assets/components/common/forms/editors/wysihtml5/assets/lib/js/wysihtml5-0.3.0_rc2.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/editors/wysihtml5/assets/lib/js/bootstrap-wysihtml5-0.0.2.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/editors/wysihtml5/assets/custom/wysihtml5.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/wizards/assets/lib/jquery.bootstrap.wizard.js?v=v1.0.3-rc2");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/wizards/assets/custom/js/form-wizards.init.js?v=v1.0.3-rc2");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/fuelux-radio/fuelux-radio.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/jasny-fileupload/assets/js/bootstrap-fileupload.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/button-states/button-loading/assets/js/button-loading.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-select/assets/lib/js/bootstrap-select.js?v=v1.0.3-rc2");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-select/assets/custom/js/bootstrap-select.init.js?v=v1.0.3-rc2");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/select2/assets/lib/js/select2.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/select2/assets/custom/js/select2.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/multiselect/assets/lib/js/jquery.multi-select.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/multiselect/assets/custom/js/multiselect.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/inputmask/assets/lib/jquery.inputmask.bundle.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/inputmask/assets/custom/inputmask.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-datepicker/assets/custom/js/bootstrap-datepicker.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-timepicker/assets/lib/js/bootstrap-timepicker.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-timepicker/assets/custom/js/bootstrap-timepicker.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/farbtastic.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/colorpicker-farbtastic.init.js?v=v1.0.3-rc2");?>"></script>
+
+    <script>
+        $(function(){
+            function capture(video, scaleFactor) {
+                if(scaleFactor == null){
+                    scaleFactor = 1;
+                }
+                var w = video.videoWidth * scaleFactor;
+                var h = video.videoHeight * scaleFactor;
+                var canvas = document.createElement('canvas');
+                canvas.width  = w;
+                canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, w, h);
+                return canvas;
+            }
+
+            function dataURItoBlob(dataURI) {
+                // convert base64/URLEncoded data component to raw binary data held in a string
+                var byteString;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                    byteString = atob(dataURI.split(',')[1]);
+                else
+                    byteString = unescape(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+                // write the bytes of the string to a typed array
+                var ia = new Uint8Array(byteString.length);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+                return new Blob([ia], {type:mimeString});
+            }
+
+            var $video = $('#video-display');
+            var $input = $('#video-input');
+            var $img = $('#display-thumb');
+
+            var URL = window.URL || window.webkitURL;
+
+            $input.change(function(e){
+                var file = $input.get(0).files[0];
+                var fileURL = URL.createObjectURL(file);
+                $video.attr('src', fileURL);
+            });
+
+            $video.bind('loadedmetadata', function(e){
+                var capTime = Math.floor(Math.random() * this.duration) + 1;
+                this.currentTime = capTime;
+            });
+
+            $video.bind('seeked', function(e){
+                var canvas = capture(this, 1);
+                var data = canvas.toDataURL("image/jpeg");
+                $img.attr('src', data);
+            });
+
+            // form submit
+            $('#addvideo-form').submit(function(e){
+                e.preventDefault();
+                var fd = new FormData(this);
+                var data = $img.attr('src');
+                var blob = dataURItoBlob(data);
+                fd.append("video_thumb", blob, 'thumb.jpeg');
+
+                var inputs = $(":input", this);
+                inputs.prop("disabled", true);
+
+                var $progress = $('#upload-progress');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '',
+                    data: fd,
+                    contentType: false,
+                    xhr: function()
+                    {
+                        $progress.removeClass("hidden");
+
+                        var xhr = new window.XMLHttpRequest();
+                        //Upload progress
+                        xhr.upload.addEventListener("progress", function(evt){
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = percentComplete * 100;
+                                $progress.val(percentComplete);
+                                //Do something with upload progress
+                            }
+                        }, false);
+                        //Download progress
+                        xhr.addEventListener("progress", function(evt){
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = percentComplete * 100;
+                                $progress.attr('valut', percentComplete);
+                                //Do something with download progress
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(data){
+                        if(data.error == undefined){
+                            notyfy({
+                                text: 'Success',
+                                type: 'success',
+                                dismissQueue: true
+                            });
+                            setTimeout(function(){ window.location.replace('<?php echo URL::to("content");?>'); }, 1000);
+                        }
+                        else {
+                            notyfy({
+                                text: 'No success',
+                                type: 'error',
+                                dismissQueue: true,
+                                timeout: 3000
+                            });
+                            inputs.prop("disabled", false);
+                            $progress.addClass("hidden");
+                        }
+                    },
+                    error: function(){
+                        notyfy({
+                            text: 'No success',
+                            type: 'error',
+                            dismissQueue: true,
+                            timeout: 3000
+                        });
+                        inputs.prop("disabled", false);
+                        $progress.addClass("hidden");
+                    },
+                    dataType: 'json',
+                    processData: false,
+                    contentType: false
+                });
+
+                return false;
+            });
+        });
+    </script>
+    <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+    <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/custom/js/notyfy.init.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+@endsection

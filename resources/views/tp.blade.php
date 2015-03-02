@@ -42,10 +42,10 @@
     <div id="menu" class="hidden-print hidden-xs ">
         <div id="sidebar-collapse-wrapper">
             <ul class="list-unstyled">
-                <li><a class="glyphicons user" href="<?php echo URL::to("/user");?>"><i></i><span>User</span></a></li>
-                <li><a class="glyphicons notes_2" href="<?php echo URL::to("/content");?>"><i></i><span>Content</span></a></li>
-                <li><a class="icon-newspaper" href="<?php echo URL::to("/news");?>"><i></i><span>News</span></a></li>
-                <li><a class="icon-user-1" href=""><i></i><span>Guru</span></a></li>
+                <li><a class="glyphicons user" href="<?php echo URL::to("/user");?>"><i></i><span>ผู้ใช้งาน</span></a></li>
+                <li><a class="glyphicons notes_2" href="<?php echo URL::to("/content");?>"><i></i><span>เนื้อหา</span></a></li>
+                <li><a class="icon-newspaper" href="<?php echo URL::to("/news");?>"><i></i><span>ข่าวสาร</span></a></li>
+                <li><a class="icon-user-1" href=""><i></i><span>ผู้เชี่ยวชาญ</span></a></li>
             </ul>
         </div>
     </div>

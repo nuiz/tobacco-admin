@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">News</h3>
+        <h3 class="">ข่าว</h3>
 
         <!-- Widget ---- -->
 
@@ -10,7 +10,7 @@
             <!-- Widget heading -->
             <div class="widget-head">
                 <h4 class="heading">
-                    <a href="<?php echo URL::to("news/add");?>">add news</a>
+                    <a href="<?php echo URL::to("news/add");?>">เพิ่มข่าว</a>
                 </h4>
             </div>
             <!-- // Widget heading END -->
@@ -21,7 +21,7 @@
                     <thead>
                     <tr>
                         <th class="center"></th>
-                        <th>News Name</th>
+                        <th>ชื่อข่าว</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -32,7 +32,7 @@
                     <tr>
                         <th class="center"><?php echo $item->news_id;?></th>
                         <th><?php echo $item->news_name;?></th>
-                        <th><a class="delete-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">delete</a></th>
+                        <th><a class="delete-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">ลบ</a></th>
                     </tr>
                     <?php }?>
                     </tbody>

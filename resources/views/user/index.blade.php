@@ -10,7 +10,7 @@
         <div class="widget">
             <!-- Widget heading -->
             <div class="widget-head">
-                <h4 class="heading"><a href="<?php echo URL::to('user/addcluster');?>">add cluster</a></h4>
+                <h4 class="heading"><a href="<?php echo URL::to('user/addcluster');?>">เพิ่ม cluster</a></h4>
             </div>
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
@@ -21,7 +21,6 @@
                     <tr>
                         <th class="center"></th>
                         <th>Username</th>
-                        <th>Level</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -50,7 +49,7 @@
         <div class="widget">
             <!-- Widget heading -->
             <div class="widget-head">
-                <h4 class="heading"><a href="<?php echo URL::to('user/addwriter');?>">add writer</a></h4>
+                <h4 class="heading"><a href="<?php echo URL::to('user/addwriter');?>">เพิ่ม writer</a></h4>
             </div>
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
@@ -61,7 +60,6 @@
                     <tr>
                         <th class="center"></th>
                         <th>Username</th>
-                        <th>Level</th>
                         <th></th>
                     </tr>
                     </thead>

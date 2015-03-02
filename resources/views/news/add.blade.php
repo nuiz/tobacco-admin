@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">Add news</h3>
+        <h3 class="">เพิ่มข่าว</h3>
 
         <!-- Widget ---- -->
 
@@ -18,19 +18,19 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Name</label>
+                        <label class="col-sm-2 control-label">ชื่อข่าว</label>
                         <div class="col-sm-10">
-                            <input type="text" name="news_name" class="form-control" placeholder="news name" required="">
+                            <input type="text" name="news_name" class="form-control" placeholder="ชื่อข่าว" required="">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Description</label>
+                        <label class="col-sm-2 control-label">คำอธิบายข่าว</label>
                         <div class="col-sm-10">
-                            <textarea type="text" name="news_description" class="form-control" placeholder="news description" required=""></textarea>
+                            <textarea type="text" name="news_description" class="form-control" placeholder="คำอธิบายข่าว" required=""></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Image</label>
+                        <label class="col-sm-2 control-label">ไฟล์รูปข่าว</label>
 
                         <div class="col-sm-10">
                             <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
@@ -52,7 +52,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">ตกลง</button>
                         </div>
                     </div>
                 </form>

@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">Content</h3>
+        <h3 class="">เนื้อหา</h3>
 
         <!-- Widget ---- -->
 
@@ -10,8 +10,8 @@
             <!-- Widget heading -->
             <div class="widget-head">
                 <h4 class="heading">
-                    <a href="<?php echo URL::to("content/addvideo");?>">add video</a> |
-                    <a href="<?php echo URL::to("content/addbook");?>">add book</a>
+                    <a href="<?php echo URL::to("content/addvideo");?>">เพิ่ม video</a> |
+                    <a href="<?php echo URL::to("content/addbook");?>">เพิ่ม e-book</a>
                 </h4>
             </div>
             <!-- // Widget heading END -->
@@ -22,8 +22,9 @@
                     <thead>
                     <tr>
                         <th class="center"></th>
-                        <th>Content Name</th>
-                        <th>Type</th>
+                        <th>ชื่อเนื้อหา</th>
+                        <th>ประเภท</th>
+                        <th>หมวดหมู่</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -33,11 +34,12 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php echo $item->content_id;?></th>
-                        <th><?php echo $item->content_name;?></th>
-                        <th><?php echo $item->content_type;?></th>
-                        <th><a class="prettyP" href="<?php echo $item->content_type=="video"? $item->video_url: $item->book_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $item->content_description;?>">display</a></th>
-                        <th><a class="delete-btn" href="<?php echo URL::to("content/delete?id={$item->content_id}");?>">delete</a></th>
+                        <td class="center"><?php echo $item->content_id;?></td>
+                        <td><?php echo $item->content_name;?></td>
+                        <td><?php echo $item->content_type;?></td>
+                        <td><?php echo $item->category_name;?></td>
+                        <td><a class="prettyP" href="<?php echo $item->content_type=="video"? $item->video_url: $item->book_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $item->content_description;?>">แสดงผล</a></td>
+                        <td><a class="delete-btn" href="<?php echo URL::to("content/delete?id={$item->content_id}");?>">ลบ</a></td>
                     </tr>
                     <?php }?>
                     </tbody>

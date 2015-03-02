@@ -19,8 +19,8 @@ class ContentCTL extends Controller {
     }
 
     public function getAddvideo(){
-        $categories = Api::get("/category");
-        return view("content/addvideo", ["categories"=> $categories->data]);
+        $category_tree = Api::get("/category/tree");
+        return view("content/addvideo", ["category_tree"=> $category_tree]);
     }
 
     public function postAddvideo(){
@@ -38,9 +38,9 @@ class ContentCTL extends Controller {
     }
 
     public function getAddbook(){
-        $categories = Api::get("/category");
+        $category_tree = Api::get("/category/tree");
         $book_type = Api::get("/book_type");
-        return view("content/addbook", ["categories"=> $categories->data, "book_types"=> $book_type->data]);
+        return view("content/addbook", ["category_tree"=> $category_tree, "book_types"=> $book_type->data]);
     }
 
     public function postAddbook(){

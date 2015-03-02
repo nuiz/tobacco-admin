@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">Content: Add e-book</h3>
+        <h3 class="">เพิ่มเนื้อหา(e-book)</h3>
 
         <!-- Widget ---- -->
 
@@ -18,49 +18,47 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Name</label>
+                        <label class="col-sm-2 control-label">ชื่อเนื้อหา</label>
                         <div class="col-sm-10">
-                            <input type="text" name="content_name" class="form-control" placeholder="content name" required="">
+                            <input type="text" name="content_name" class="form-control" placeholder="ชื่อเนื้อหา" required="">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Description</label>
+                        <label class="col-sm-2 control-label">คำอธิบาย</label>
                         <div class="col-sm-10">
-                            <textarea type="text" name="content_description" class="form-control" placeholder="content description" required=""></textarea>
+                            <textarea type="text" name="content_description" class="form-control" placeholder="คำอธิบายเนื้อหา" required=""></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Author</label>
+                        <label class="col-sm-2 control-label">ชื่อผู้แต่ง</label>
                         <div class="col-sm-10">
-                            <input type="text" name="boon_author" class="form-control" placeholder="Book author" >
+                            <input type="text" name="boon_author" class="form-control" placeholder="ชื่อผู้แต่ง" >
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Publish date</label>
+                        <label class="col-sm-2 control-label">วันที่เผยแพร่</label>
                         <div class="col-sm-10">
-                            <input type="text" name="book_date" class="form-control" placeholder="Book publish date" >
+                            <input type="text" name="book_date" class="form-control" placeholder="วันที่เผยแพร่" >
                         </div>
                     </div><div class="form-group">
-                        <label class="col-sm-2 control-label">Publishing house</label>
+                        <label class="col-sm-2 control-label">สำนักพิมพ์</label>
                         <div class="col-sm-10">
-                            <input type="text" name="book_publishing_house" class="form-control" placeholder="Publishing house" >
+                            <input type="text" name="book_publishing_house" class="form-control" placeholder="สำนักพิมพ์" >
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Category</label>
-                        <div class="col-sm-10">
-                            <select name="category_id">
-                                <?php foreach($categories as $key=> $cat){?>
-                                <option value="<?php echo $cat->category_id;?>"><?php echo $cat->category_name;?></option>
-                                <?php }?>
-                            </select>
+                        <input type="hidden" name="category_id" id="category_id">
+                        <label class="col-sm-2 control-label">หมวดหมู่</label>
+                        <div class="col-sm-10" id="category-wrapper">
+
                         </div>
                     </div>
+
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Book Type</label>
+                        <label class="col-sm-2 control-label">ประเภทหนังสือ</label>
                         <div class="col-sm-10">
-                            <select name="category_id">
+                            <select name="category_id" class="form-control">
                                 <?php foreach($book_types as $key=> $book){?>
                                 <option value="<?php echo $book->book_type_id;?>"><?php echo $book->book_type_name;?></option>
                                 <?php }?>
@@ -68,7 +66,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Book</label>
+                        <label class="col-sm-2 control-label">ไฟล์ e-book(pdf)</label>
 
                         <div class="col-sm-10">
                             <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
@@ -89,7 +87,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">Book cover</label>
+                        <label class="col-sm-2 control-label">หน้าปกหนังสือ</label>
 
                         <div class="col-sm-10">
                             <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
@@ -228,6 +226,99 @@
 
                 return false;
             });
+        });
+    </script>
+    <script>
+        $(function(){
+            var tree = <?php echo json_encode($category_tree);?>;
+            var $inputCategoryId = $('#category_id');
+            var $wrapper = $('#category-wrapper');
+            var $rootSelect = $('<select class="form-control"></select>');
+            var $subSelect1 = $('<select class="form-control" style="display: none;"></select>');
+            var $subSelect2 = $('<select class="form-control" style="display: none;"></select>');
+
+            var i = 0;
+            for(i=0;i<tree.data.length;i++){
+                $rootSelect.append('<option value="'+tree.data[i].category_id+'">'+tree.data[i].category_name+'</option>');
+            }
+
+            $rootSelect.change(function(e){
+                $subSelect2.hide();
+                $subSelect1.hide();
+                var val = $(this).val();
+                var i;
+                var cat1;
+                for(i=0;i<tree.data.length;i++){
+                    if(tree.data[i].category_id == val){
+                        cat1 = tree.data[i];
+                    }
+                }
+
+                // set children object to data
+                $subSelect1.data('children', cat1.children);
+
+                $subSelect1.empty();
+                if(cat1.children.length != 0){
+                    $subSelect1.show();
+                    $subSelect1.append('<option value="0">-- หมวดหมู่ย่อย --</option>');
+                    for(i = 0;i<cat1.children.length;i++){
+                        $subSelect1.append('<option value="'+cat1.children[i].category_id+'">'+cat1.children[i].category_name+'</option>');
+                    }
+                }
+                else {
+                    $subSelect1.data('children', cat1.children);
+                }
+
+                $inputCategoryId.val(val);
+            });
+
+            $subSelect1.change(function(e){
+                $subSelect2.hide();
+                var val = $(this).val();
+                if(val == 0){
+                    $inputCategoryId.val($rootSelect.val());
+                    return;
+                }
+
+                $inputCategoryId.val(val);
+
+                var i;
+                var subs = $subSelect1.data('children');
+                var cats;
+                for(i=0;i<subs.length;i++){
+                    if(subs[i].category_id == val){
+                        cats = subs[i];
+                    }
+                }
+
+                $subSelect2.empty();
+                if(cats.children.length != 0){
+                    $subSelect2.show();
+                    $subSelect2.append('<option value="0">-- หมวดหมู่ย่อย --</option>');
+                    for(i = 0;i<cats.children.length;i++){
+                        $subSelect2.append('<option value="'+cats.children[i].category_id+'">'+cats.children[i].category_name+'</option>');
+                    }
+
+                }
+
+
+            });
+
+            $subSelect2.change(function(e){
+                var val = $(this).val();
+                if(val == 0){
+                    $inputCategoryId.val($subSelect1.val());
+                    return;
+                }
+
+                $inputCategoryId.val(val);
+            });
+
+            $wrapper.append($rootSelect);
+            $wrapper.append($subSelect1);
+            $wrapper.append($subSelect2);
+
+            $rootSelect.change();
         });
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>

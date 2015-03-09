@@ -31,7 +31,10 @@
                     <tr>
                         <th class="center"><?php echo $item->account_id;?></th>
                         <th><?php echo $item->username;?></th>
-                        <th></th>
+                        <th>
+                            <a href="<?php echo URL::to("usercluster/edit?id=".$item->account_id);?>">แก้ไข</a> /
+                            <a class="delete-btn" href="<?php echo URL::to("usercluster/delete?id=".$item->account_id);?>">ลบ</a>
+                        </th>
                     </tr>
                     <?php }?>
                     </tbody>
@@ -41,4 +44,14 @@
             </div>
         </div>
     </div>
+    <script>
+        $(function(){
+            $('.delete-btn').click(function(e){
+                if(!window.confirm('Are you shure?')){
+                    e.preventDefault();
+                    return false;
+                }
+            });
+        });
+    </script>
 @endsection

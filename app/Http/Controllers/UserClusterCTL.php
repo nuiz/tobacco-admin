@@ -36,6 +36,32 @@ class UserClusterCTL extends Controller {
         return json_encode($res->body);
     }
 
+    public function getEdit(){
+        $req = Request::createFromGlobals();
+
+        $res = Api::get("/usercluster/".$req->input('id'));
+        return view("user/cluster/edit", ['item'=> $res]);
+    }
+
+    public function postEdit(){
+        $req = Request::createFromGlobals();
+
+        $id = $req->input('id');
+
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::put(Api::BASE_URL."/usercluster/{$id}?auth_token=".$u->auth_token, [], $req->input());
+        return json_encode($res->body);
+    }
+
+    public function getDelete(){
+        $req = Request::createFromGlobals();
+        $id = $req->input("id");
+
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::delete(Api::BASE_URL."/usercluster/{$id}?auth_token=".$u->auth_token);
+        return redirect("usercluster");
+    }
+
     public function postGenerate(){
         $req = Request::createFromGlobals();
 

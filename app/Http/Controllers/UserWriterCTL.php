@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Api;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Session;
 
 class UserWriterCTL extends Controller {
     public function __construct()
@@ -33,5 +34,15 @@ class UserWriterCTL extends Controller {
 
         $res = \Unirest\Request::post(Api::BASE_URL."/account/upwriter", [], $req->input());
         return json_encode($res->body);
+    }
+
+    //delete
+    public function getDelete(){
+        $req = Request::createFromGlobals();
+        $id = $req->input("id");
+
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::delete(Api::BASE_URL."/userwriter/{$id}?auth_token=".$u->auth_token);
+        return redirect("userwriter");
     }
 }

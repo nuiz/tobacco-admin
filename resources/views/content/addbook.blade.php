@@ -38,7 +38,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">วันที่เผยแพร่</label>
                         <div class="col-sm-10">
-                            <input type="text" name="book_date" class="form-control" placeholder="วันที่เผยแพร่" >
+                            <input type="text" name="book_date" class="form-control" type="text" placeholder="yyyy-mm-dd" id="datepicker1" required="">
                         </div>
                     </div><div class="form-group">
                         <label class="col-sm-2 control-label">สำนักพิมพ์</label>
@@ -79,7 +79,8 @@
                                                 <span class="btn btn-default btn-file">
                                                 <span class="fileupload-new">Select file</span>
                                                 <span class="fileupload-exists">Change</span>
-                                                <input type="file" name="book" class="margin-none" id="book-input" required=""/>
+                                                <input type="file" name="book" class="margin-none" id="book-input" required=""
+                                                    accept="application/pdf" />
                                                 </span><a href="#" class="btn fileupload-exists"
                                                           data-dismiss="fileupload">Remove</a></span>
                                 </div>

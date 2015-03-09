@@ -89,14 +89,15 @@ class ContentCTL extends Controller {
             $input["videos_thumb"][$key] = curl_file_create($video_thumb->getRealPath(), $video_thumb->getClientMimeType(), $video_thumb->getClientOriginalName());
         }
         $input["attach_files"] = [];
-        if(!is_null($attach_files) && count($attach_files > 0)){
+        if(!is_null($attach_files) && count($attach_files) > 0){
             foreach($attach_files as $key=> $attach_file){
+                if(is_null($attach_file))
+                    break;
+
                 $input["attach_files"][$key] = curl_file_create($attach_file->getRealPath(), $attach_file->getClientMimeType(), $attach_file->getClientOriginalName());
             }
         }
 
-//        $input["video"] = curl_file_create($video->getRealPath(), $video->getClientMimeType(), $video->getClientOriginalName());
-//        $input["video_thumb"] = curl_file_create($video_thumb->getRealPath(), $video_thumb->getClientMimeType(), $video_thumb->getClientOriginalName());
         $input["content_type"] = "video";
 
         $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
@@ -115,6 +116,17 @@ class ContentCTL extends Controller {
         $input["book"] = curl_file_create($book->getRealPath(), $book->getClientMimeType(), $book->getClientOriginalName());
         $input["book_cover"] = curl_file_create($book_cover->getRealPath(), $book_cover->getClientMimeType(), $book_cover->getClientOriginalName());
         $input["content_type"] = "book";
+
+        $attach_files = $req->file("attach_files");
+        $input["attach_files"] = [];
+        if(!is_null($attach_files) && count($attach_files) > 0){
+            foreach($attach_files as $key=> $attach_file){
+                if(is_null($attach_file))
+                    break;
+
+                $input["attach_files"][$key] = curl_file_create($attach_file->getRealPath(), $attach_file->getClientMimeType(), $attach_file->getClientOriginalName());
+            }
+        }
 
         $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
         return $res->body;

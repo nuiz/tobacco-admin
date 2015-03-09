@@ -108,6 +108,7 @@
         </div>
         <!--  End Copyright Line -->
     </div>
+    @yield('inject-bottom')
     <!-- // Footer END -->
     <script data-id="App.Config">
         var App = {};

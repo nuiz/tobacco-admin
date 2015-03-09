@@ -52,6 +52,9 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
+                            <div>
+                                <a id="display-example">แสดงตัวอย่าง</a>
+                            </div>
                             <button type="submit" class="btn btn-primary">ตกลง</button>
                         </div>
                     </div>
@@ -90,6 +93,10 @@
 
     <script>
         $(function(){
+            $('#display-example').click(function(e){
+
+            });
+
             // form submit
             $('#addnews-form').submit(function(e){
                 e.preventDefault();
@@ -171,4 +178,35 @@
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/custom/js/notyfy.init.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+@endsection
+
+@section('inject-bottom')
+<style>
+    .lightbox-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.48);;
+        z-index: 10000;
+        /*display: none;*/
+    }
+    .example-news {
+        width: 480px;
+        height: 500px;
+        background: white;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -240px;
+        margin-top: -250px;
+        border-radius: 40px;
+    }
+</style>
+<div class="lightbox-wrap example-news-block">
+    <div class="example-news">
+        <div></div>
+    </div>
+</div>
 @endsection

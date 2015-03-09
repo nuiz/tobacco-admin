@@ -19,9 +19,10 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">รหัสผ่าน</label>
+                        <label class="col-sm-2 control-label">ขนาดไฟล์ที่สามารถ upload ได้</label>
                         <div class="col-sm-10">
-                            <input type="text" name="upload_max_filesize" class="form-control" placeholder="upload_max_filesize" value="<?php echo $config['extension_upload'];?>">
+                            <input type="text" name="upload_max_filesize" class="form-control" placeholder="upload_max_filesize" value="<?php echo $config['upload_max_filesize'];?>">
+                            <p class="helper">example jpeg,png,doc,docx</p>
                         </div>
                     </div>
                     <div class="form-group">

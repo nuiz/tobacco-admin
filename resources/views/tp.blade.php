@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="sidebar sidebar-discover">
 <head>
-    <title>Tobacco Backend</title>
+    <title>Tobacco Admin</title>
     <!-- Meta -->
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -36,13 +36,22 @@
     </script>
 </head>
 <body>
+<?php $u = Session::get("userlogin");?>
 <!-- Main Container Fluid -->
 <div class="container-fluid menu-hidden">
     <!-- Sidebar Menu -->
     <div id="menu" class="hidden-print hidden-xs ">
         <div id="sidebar-collapse-wrapper">
             <ul class="list-unstyled">
-                <li><a class="glyphicons user" href="<?php echo URL::to("/user");?>"><i></i><span>ผู้ใช้งาน</span></a></li>
+                <?php if(in_array($u->level_id, [1])){?>
+                <li><a class="glyphicons user" href="<?php echo URL::to("/config");?>"><i></i><span>ตั้งค่าระบบ</span></a></li>
+                <?php }?>
+                <?php if(in_array($u->level_id, [1, 2])){?>
+                <li><a class="glyphicons user" href="<?php echo URL::to("/usercluster");?>"><i></i><span>ผู้ใช้งาน(Cluster)</span></a></li>
+                <?php }?>
+                <?php if(in_array($u->level_id, [1, 2, 3])){?>
+                <li><a class="glyphicons user" href="<?php echo URL::to("/userwriter");?>"><i></i><span>ผู้ใช้งาน(Writer)</span></a></li>
+                <?php }?>
                 <li><a class="glyphicons notes_2" href="<?php echo URL::to("/content");?>"><i></i><span>เนื้อหา</span></a></li>
                 <li><a class="icon-newspaper" href="<?php echo URL::to("/news");?>"><i></i><span>ข่าวสาร</span></a></li>
                 <li><a class="icon-user-1" href=""><i></i><span>ผู้เชี่ยวชาญ</span></a></li>
@@ -63,17 +72,18 @@
 
                 <li class="dropdown username">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                        <img src="<?php echo URL::to("/assets/images/people/35/2.jpg");?>" class="img-circle"
-                             width="30" />Administrator
+                        <!--<img src="<?php //echo URL::to("/assets/images/people/35/2.jpg");?>" class="img-circle"
+                             width="30" />Administrator-->
+                        <?php echo $u->username;?>
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu pull-right">
-                        <li><a href="#" class="glyphicons user"><i></i> Account</a>
-                        </li>
-                        <li><a href="#" class="glyphicons envelope"><i></i>Messages</a>
-                        </li>
-                        <li><a href="#" class="glyphicons settings"><i></i>Settings</a>
-                        </li>
+                        {{--<li><a href="#" class="glyphicons user"><i></i> Account</a>--}}
+                        {{--</li>--}}
+                        {{--<li><a href="#" class="glyphicons envelope"><i></i>Messages</a>--}}
+                        {{--</li>--}}
+                        {{--<li><a href="#" class="glyphicons settings"><i></i>Settings</a>--}}
+                        {{--</li>--}}
                         <li><a href="<?php echo URL::to("logout");?>" class="glyphicons lock no-ajaxify"><i></i>Logout</a>
                         </li>
                     </ul>
@@ -82,7 +92,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="dropdown">
-                        <a data-toggle="dropdown" style="font-weight:bolder" href="" >Tobacco Backend</a>
+                        <a data-toggle="dropdown" style="font-weight:bolder" href="" >Tobacco Admin</a>
                     </li>
                 </ul>
             </div>

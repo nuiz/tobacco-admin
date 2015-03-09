@@ -21,6 +21,8 @@ Route::controllers([
 	'login'=> 'LoginCTL',
 	'content'=> 'ContentCTL',
 	'logout'=> 'LogoutCTL',
-	'user'=> 'UserCTL',
-	'news'=> 'NewsCTL'
+	'usercluster'=> 'UserClusterCTL',
+	'userwriter'=> 'UserWriterCTL',
+	'news'=> 'NewsCTL',
+	'config'=> 'ConfigCTL'
 ]);

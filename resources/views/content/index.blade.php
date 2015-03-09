@@ -38,7 +38,7 @@
                         <td><?php echo $item->content_name;?></td>
                         <td><?php echo $item->content_type;?></td>
                         <td><?php echo $item->category_name;?></td>
-                        <td><a class="prettyP" href="<?php echo $item->content_type=="video"? $item->video_url: $item->book_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $item->content_description;?>">แสดงผล</a></td>
+                        <td><a class="prettyP" href="<?php echo $item->content_type=="video"? $item->videos[0]->video_url: $item->book_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $item->content_description;?>">แสดงผล</a></td>
                         <td><a class="delete-btn" href="<?php echo URL::to("content/delete?id={$item->content_id}");?>">ลบ</a></td>
                     </tr>
                     <?php }?>

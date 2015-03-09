@@ -10,14 +10,17 @@ namespace App\Http\Controllers;
 
 
 
+use App\Http\Api;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\URL;
 
 class LoginCTL extends Controller {
     public function postIndex(Request $request){
-        if($request->input("username") == "test" && $request->input("password") == "111111"){
-            Session::put("userlogin", ["username"=> "test"]);
+        $res = \Unirest\Request::post(Api::BASE_URL."/login", [], $request->input());
+        $data = $res->body;
+        if(!isset($data->error)){
+            Session::put("userlogin", $data);
             return redirect(URL::to("/content"));
         }
         else {

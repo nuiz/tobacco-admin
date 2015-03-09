@@ -13,6 +13,11 @@ use App\Http\Api;
 use App\Http\Requests\Request;
 
 class NewsCTL extends Controller {
+    public function __construct()
+    {
+        $this->middleware('auth');
+    }
+
     public function getIndex(){
         $apiRes = Api::get("/news");
         return view("news/index", ['items'=> $apiRes->data]);

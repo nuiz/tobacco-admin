@@ -1,6 +1,7 @@
 <?php namespace App\Http\Controllers;
 
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\URL;
 
 class WelcomeController extends Controller {
 
@@ -32,7 +33,8 @@ class WelcomeController extends Controller {
 	 */
 	public function index(\Illuminate\Http\Request $req)
 	{
-		return view('welcome');
+//		return view('welcome');
+		return redirect(URL::to("content"));
 	}
 
 }

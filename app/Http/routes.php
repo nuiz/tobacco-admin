@@ -24,5 +24,6 @@ Route::controllers([
 	'usercluster'=> 'UserClusterCTL',
 	'userwriter'=> 'UserWriterCTL',
 	'news'=> 'NewsCTL',
-	'config'=> 'ConfigCTL'
+	'config'=> 'ConfigCTL',
+	'faq'=> 'FAQCTL'
 ]);

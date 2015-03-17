@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">เพิ่ม FAQ</h3>
+        <h3 class="">แก้ไข FAQ</h3>
 
         <!-- Widget ---- -->
 
@@ -20,13 +20,17 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">คำถาม</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_question" name="faq_question" class="form-control" placeholder="คำถาม" required=""></textarea>
+                            <textarea type="text" id="faq_question" name="faq_question" class="form-control" placeholder="" required="">
+                                <?php echo $item->faq_question;?>
+                            </textarea>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">คำตอบ</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_answer" name="faq_answer" class="form-control" placeholder="คำตอบ" required=""></textarea>
+                            <textarea type="text" id="faq_answer" name="faq_answer" class="form-control" placeholder="" required="">
+                                <?php echo $item->faq_answer;?>
+                            </textarea>
                         </div>
                     </div>
                     <div class="form-group">

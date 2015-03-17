@@ -54,9 +54,9 @@
                 <?php }?>
                 <li><a class="glyphicons notes_2" href="<?php echo URL::to("/content");?>"><i></i><span>เนื้อหา</span></a></li>
                 <li><a class="icon-newspaper" href="<?php echo URL::to("/news");?>"><i></i><span>ข่าวสาร</span></a></li>
-                <li><a class="icon-user-1" href="#"><i></i><span>ผู้เชี่ยวชาญ</span></a></li>
-                <li><a class="icon-user-1" href="#"><i></i><span>ศูนย์KM</span></a></li>
-                <li><a class="icon-user-1" href="#"><i></i><span>FAQ</span></a></li>
+                <li><a class="icon-question" href="<?php echo URL::to("/faq");?>"><i></i><span>เพิ่มคำถามที่พบบ่อย</span></a></li>
+                <li><a class="icon-user-1" href="<?php echo URL::to("/guru");?>"><i></i><span>ผู้เชี่ยวชาญ</span></a></li>
+                <li><a class="icon-user-1" href="<?php echo URL::to("/kmcenter");?>"><i></i><span>ศูนย์ KM</span></a></li>
             </ul>
         </div>
     </div>

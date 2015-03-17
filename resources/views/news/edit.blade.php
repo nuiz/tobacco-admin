@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">เพิ่ม FAQ</h3>
+        <h3 class="">แก้ไขข่าว</h3>
 
         <!-- Widget ---- -->
 
@@ -18,19 +18,44 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำถาม</label>
+                        <label class="col-sm-2 control-label">ชื่อข่าว</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_question" name="faq_question" class="form-control" placeholder="คำถาม" required=""></textarea>
+                            <input type="text" id="news_name" name="news_name" class="form-control" placeholder="ชื่อข่าว" required="">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำตอบ</label>
+                        <label class="col-sm-2 control-label">คำอธิบายข่าว</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_answer" name="faq_answer" class="form-control" placeholder="คำตอบ" required=""></textarea>
+                            <textarea type="text" id="news_description" name="news_description" class="form-control" placeholder="คำอธิบายข่าว" value="<?php echo $value;?" required=""></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ไฟล์รูปข่าว</label>
+
+                        <div class="col-sm-10">
+                            <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
+                                <div class="input-group">
+                                    <div class="form-control col-md-3">
+                                        <i class="fa fa-file fileupload-exists"></i>
+                                        <span class="fileupload-preview"></span>
+                                    </div>
+                                                <span class="input-group-btn">
+                                                <span class="btn btn-default btn-file">
+                                                <span class="fileupload-new">Select file</span>
+                                                <span class="fileupload-exists">Change</span>
+                                                <input type="file" name="news_image" class="margin-none" id="news_image-input" required="" />
+                                                </span><a href="#" class="btn fileupload-exists"
+                                                          data-dismiss="fileupload">Remove</a></span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
+                            <div>
+                                <a id="display-example-btn" href="">แสดงตัวอย่าง</a>
+                            </div>
+                            <div class="hidden" id="image-buffer-wrapper"></div>
                             <button type="submit" class="btn btn-primary">ตกลง</button>
                         </div>
                     </div>
@@ -69,6 +94,61 @@
 
     <script>
         $(function(){
+            var URL = window.URL || window.webkitURL;
+
+            function truncText (text, maxLength, ellipseText){
+                ellipseText = ellipseText || '...';
+
+                if (text.length < maxLength)
+                    return text;
+
+                //Find the last piece of string that contain a series of not A-Za-z0-9_ followed by A-Za-z0-9_ starting from maxLength
+                var m = text.substr(0, maxLength).match(/([^A-Za-z0-9_]*)[A-Za-z0-9_]*$/);
+                if(!m) return ellipseText;
+
+                //Position of last output character
+                var lastCharPosition = maxLength-m[0].length;
+
+                //If it is a space or "[" or "(" or "{" then stop one before.
+                if(/[\s\(\[\{]/.test(text[lastCharPosition])) lastCharPosition--;
+
+                //Make sure we do not just return a letter..
+                return (lastCharPosition ? text.substr(0, lastCharPosition+1) : '') + ellipseText;
+            }
+
+            var $newsImageInput = $('#news_image-input');
+            var $imageBufferWrapper = $('#image-buffer-wrapper');
+            var $exampleNewsBlock = $('#example-news-block');
+            var $exampleNewsCover = $('#example-news-cover');
+
+            $exampleNewsBlock.click(function(e){
+                e.preventDefault();
+                $exampleNewsBlock.hide();
+            });
+
+            $newsImageInput.change(function(e){
+                if(this.files.length == 0)
+                    return;
+
+                var file = this.files[0];
+                var fileURL = URL.createObjectURL(file);
+
+                $exampleNewsCover.css('background-image', 'url("'+fileURL+'")');
+                $imageBufferWrapper.empty();
+            });
+
+            $('#display-example-btn').click(function(e){
+                e.preventDefault();
+                $exampleNewsBlock.show();
+
+                $('#example-news-name').text($('#news_name').val());
+                var dText = $('#news_description').val();
+                dText = truncText(dText, 420);
+                $('#example-news-description').text(dText);
+
+                return false;
+            });
+
             // form submit
             $('#addnews-form').submit(function(e){
                 e.preventDefault();
@@ -116,7 +196,7 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ window.location.replace('<?php echo URL::to("faq");?>'); }, 1000);
+                            setTimeout(function(){ window.location.replace('<?php echo URL::to("news");?>'); }, 1000);
                         }
                         else {
                             notyfy({
@@ -150,4 +230,64 @@
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/custom/js/notyfy.init.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+@endsection
+
+@section('inject-bottom')
+<style>
+    .lightbox-wrap {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.48);
+        z-index: 10000;
+        /*display: none;*/
+    }
+    .example-news {
+        width: 400px;
+        height: 500px;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        margin-left: -240px;
+        margin-top: -250px;
+        border-radius: 40px;
+        overflow: hidden;
+    }
+
+    .example-cover {
+        height: 300px;
+        background-size: cover;
+    }
+
+    .example-body {
+        position: absolute;
+        height: 270px;
+        width: 100%;
+        border-radius: 22px;
+        overflow: hidden;
+        bottom: 0;
+        left: 0;
+        padding: 20px;
+
+        background: rgba(255,255,255,0.65);
+        background: -moz-linear-gradient(top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);
+        background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(255,255,255,0.65)), color-stop(25%, rgba(255,255,255,1)), color-stop(100%, rgba(255,255,255,1)));
+        background: -webkit-linear-gradient(top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);
+        background: -o-linear-gradient(top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);
+        background: -ms-linear-gradient(top, rgba(255,255,255,0.65) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);
+        background: linear-gradient(to bottom, rgba(255,255,255,0.65) 0%, rgba(255,255,255,1) 25%, rgba(255,255,255,1) 100%);
+    }
+
+</style>
+<div id="example-news-block" class="lightbox-wrap" style="display: none;">
+    <div class="example-news">
+        <div id="example-news-cover" class="example-cover"></div>
+        <div class="example-body center">
+            <h2 id="example-news-name">Test</h2>
+            <p id="example-news-description">test test test</p>
+        </div>
+    </div>
+</div>
 @endsection

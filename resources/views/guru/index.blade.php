@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">คำถามที่พบบ่อย</h3>
+        <h3 class="">ผู้เชี่ยวชาญ</h3>
 
         <!-- Widget ---- -->
         <div class="widget">
             <!-- Widget heading -->
             <div class="widget-head">
                 <h4 class="heading">
-                    <a href="<?php echo URL::to("faq/add");?>">เพิ่มคำถามที่พบบ่อย</a>
+                    <a href="<?php echo URL::to("guru/add");?>">เพิ่มผู้เชี่ยวชาญ</a>
                 </h4>
             </div>
             <!-- // Widget heading END -->
@@ -19,8 +19,9 @@
                     <!-- Table heading -->
                     <thead>
                     <tr>
-                        <th class="center">#</th>
-                        <th>คำถาม</th>
+                        <th class="center"></th>
+                        <th>เพิ่มผู้เชี่ยวชาญ</th>
+                        <th>หมวดหมู่</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -29,9 +30,10 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <td class="center"><?php echo $item->faq_id;?></td>
-                        <td><?php echo $item->faq_question;?></td>
-                        <td><a class="delete-btn" href="<?php echo URL::to("faq/delete?id={$item->faq_id}");?>">ลบ</a></td>
+                        <td class="center"><?php echo $item->guru_id;?></td>
+                        <td><?php echo $item->firstname." ".$item->lastname;?></td>
+                        <td><?php echo $item->guru_cat_name;?></td>
+                        <td><a class="delete-btn" href="<?php echo URL::to("guru/delete?id={$item->guru_id}");?>">ลบ</a></td>
                     </tr>
                     <?php }?>
                     </tbody>

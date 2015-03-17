@@ -62,6 +62,28 @@ class ContentCTL extends Controller {
         }
     }
 
+    public function getEditbook(){
+        $req = Request::createFromGlobals();
+        $category_tree = Api::get("/category/tree");
+        $book_type = Api::get("/book_type");
+        $content = Api::get("/content/".$req->input("id"));
+        return view("content/editbook", ["category_tree"=> $category_tree, "book_types"=> $book_type->data, "content"=> $content]);
+    }
+
+    public function postEditbook(){
+        $req = Request::createFromGlobals();
+
+        // user internal function add book
+        $item = $this->_editBook($req);
+
+        if($req->ajax()){
+            return json_encode($item);
+        }
+        else {
+            return redirect("content");
+        }
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");
@@ -129,6 +151,29 @@ class ContentCTL extends Controller {
         }
 
         $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return $res->body;
+    }
+
+    public function _editBook(Request $req){
+
+        /**
+         * @var \Symfony\Component\HttpFoundation\File\UploadedFile $book
+         */
+        $book = $req->file("book");
+        $book_cover = $req->file("book_cover");
+
+        $input = $req->input();
+        if(!is_null($book)){
+            $input["book"] = curl_file_create($book->getRealPath(), $book->getClientMimeType(), $book->getClientOriginalName());
+        }
+        if(!is_null($book_cover)){
+            $input["book_cover"] = curl_file_create($book_cover->getRealPath(), $book_cover->getClientMimeType(), $book_cover->getClientOriginalName());
+        }
+        $input["content_type"] = "book";
+
+        $id = $req->input("id");
+
+        $res = \Unirest\Request::put(Api::BASE_URL."/content/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
         return $res->body;
     }
 }

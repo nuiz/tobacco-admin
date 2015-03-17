@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">เพิ่ม FAQ</h3>
+        <h3 class="">เพิ่มผู้เชี่ยวชาญ</h3>
 
         <!-- Widget ---- -->
 
@@ -18,15 +18,35 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำถาม</label>
+                        <label class="col-sm-2 control-label">บัญชีผู้ใช้</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_question" name="faq_question" class="form-control" placeholder="คำถาม" required=""></textarea>
+                            <select type="text" id="account_id" name="account_id" class="form-control" required="">
+                                <?php foreach($users as $key=> $u){?>
+                                <option value="<?php echo $u->account_id;?>"><?php echo $u->firstname." ".$u->lastname;?></option>
+                                <?php }?>
+                            </select>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำตอบ</label>
+                        <label class="col-sm-2 control-label">ประวัติ</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_answer" name="faq_answer" class="form-control" placeholder="คำตอบ" required=""></textarea>
+                            <textarea type="text" id="guru_history" name="guru_history" class="form-control" placeholder="" required=""></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">category</label>
+                        <div class="col-sm-10">
+                            <select type="text" id="guru_cat_id" name="guru_cat_id" class="form-control" required="">
+                                <?php foreach($category as $key=> $cat){?>
+                                <option value="<?php echo $cat->guru_cat_id;?>"><?php echo $cat->guru_cat_name;?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">โทรศัพท์</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="guru_telephone" name="guru_telephone" class="form-control" placeholder="" required="">
                         </div>
                     </div>
                     <div class="form-group">

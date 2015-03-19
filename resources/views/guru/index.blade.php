@@ -31,9 +31,12 @@
                     <?php foreach($items as $key=> $item){?>
                     <tr>
                         <td class="center"><?php echo $item->guru_id;?></td>
-                        <td><?php echo $item->firstname." ".$item->lastname;?></td>
+                        <td><?php echo "{$item->firstname} {$item->lastname} ({$item->username})";?></td>
                         <td><?php echo $item->guru_cat_name;?></td>
-                        <td><a class="delete-btn" href="<?php echo URL::to("guru/delete?id={$item->guru_id}");?>">ลบ</a></td>
+                        <td>
+                            <a href="<?php echo URL::to("guru/edit?id={$item->guru_id}");?>">แก้ไข</a> /
+                            <a class="delete-btn" href="<?php echo URL::to("guru/delete?id={$item->guru_id}");?>">ลบ</a>
+                        </td>
                     </tr>
                     <?php }?>
                     </tbody>

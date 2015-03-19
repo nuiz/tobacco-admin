@@ -56,16 +56,18 @@ class ContentVideoCTL extends Controller {
         }
 
         $content_id = $req->input("content_id");
-        $res = \Unirest\Request::delete(Api::BASE_URL."/content/{$content_id}/video?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], [
+        $query = http_build_query([
             'list_id'=> $id,
-            'content_id'=> $content_id
+            'content_id'=> $content_id,
+            'auth_token'=> "74a500a2eee1b8274dae468ddb4892fb"
         ]);
+        $res = \Unirest\Request::delete(Api::BASE_URL."/content/{$content_id}/video?".$query);
 
         if($req->ajax()){
             return json_encode($res);
         }
         else {
-            return redirect("content");
+            return redirect("content/video?content_id=".$content_id);
         }
     }
 }

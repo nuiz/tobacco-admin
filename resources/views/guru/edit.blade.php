@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">แก้ไข FAQ</h3>
+        <h3 class="">แก้ไขผู้เชี่ยวชาญ</h3>
 
         <!-- Widget ---- -->
 
         <div class="widget">
             <!-- Widget heading -->
             {{--<div class="widget-head">--}}
-                {{--<h4 class="heading"><a href="">add video</a></h4>--}}
+            {{--<h4 class="heading"><a href="">add video</a></h4>--}}
             {{--</div>--}}
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
@@ -18,19 +18,31 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำถาม</label>
+                        <label class="col-sm-2 control-label">บัญชีผู้ใช้</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_question" name="faq_question" class="form-control" placeholder="" required="">
-                                <?php echo $item->faq_question;?>
-                            </textarea>
+                            <input type="text" id="guru_telephone" name="guru_telephone" class="form-control" value="<?php echo "{$item->firstname} {$item->lastname} ({$item->username})";?>" disabled>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำตอบ</label>
+                        <label class="col-sm-2 control-label">ประวัติ</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_answer" name="faq_answer" class="form-control" placeholder="" required="">
-                                <?php echo $item->faq_answer;?>
-                            </textarea>
+                            <textarea type="text" id="guru_history" name="guru_history" class="form-control" placeholder="" required=""><?php echo $item->guru_history;?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">category</label>
+                        <div class="col-sm-10">
+                            <select type="text" id="guru_cat_id" name="guru_cat_id" class="form-control" required="">
+                                <?php foreach($category as $key=> $cat){?>
+                                <option value="<?php echo $cat->guru_cat_id;?>" <?php if($item->guru_cat_id==$cat->guru_cat_id) echo "selected";?>><?php echo $cat->guru_cat_name;?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">โทรศัพท์</label>
+                        <div class="col-sm-10">
+                            <input type="text" id="guru_telephone" name="guru_telephone" class="form-control" placeholder="" required="" value="<?php echo $item->guru_telephone;?>">
                         </div>
                     </div>
                     <div class="form-group">
@@ -120,7 +132,7 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ window.location.replace('<?php echo URL::to("faq");?>'); }, 1000);
+                            setTimeout(function(){ window.location.replace('<?php echo URL::to("guru");?>'); }, 1000);
                         }
                         else {
                             notyfy({

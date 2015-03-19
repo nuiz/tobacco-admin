@@ -43,6 +43,30 @@ class GuruCTL extends Controller {
         }
     }
 
+    public function getEdit(){
+        $req = Request::createFromGlobals();
+        $id = $req->input('id');
+
+        $item = Api::get("/guru/".$id);
+        $resCat = Api::get("/guru/category?limit=100");
+
+        return view("guru/edit", ['category'=> $resCat->data, 'item'=> $item]);
+    }
+
+    public function postEdit(){
+        $req = Request::createFromGlobals();
+
+        // user internal function add video
+        $item = $this->_edit($req);
+
+        if($req->ajax()){
+            return json_encode($item);
+        }
+        else {
+            return redirect("guru");
+        }
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");
@@ -54,6 +78,14 @@ class GuruCTL extends Controller {
     public function _add(Request $req){
         $input = $req->input();
         $res = \Unirest\Request::post(Api::BASE_URL."/guru?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return $res->body;
+    }
+
+    public function _edit(Request $req){
+        $input = $req->input();
+        $id = $req->input('id');
+
+        $res = \Unirest\Request::put(Api::BASE_URL."/guru/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
         return $res->body;
     }
 }

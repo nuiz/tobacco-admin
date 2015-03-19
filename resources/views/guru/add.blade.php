@@ -22,7 +22,7 @@
                         <div class="col-sm-10">
                             <select type="text" id="account_id" name="account_id" class="form-control" required="">
                                 <?php foreach($users as $key=> $u){?>
-                                <option value="<?php echo $u->account_id;?>"><?php echo $u->firstname." ".$u->lastname;?></option>
+                                <option value="<?php echo $u->account_id;?>"><?php echo "{$u->firstname} {$u->lastname} ({$u->username})";?></option>
                                 <?php }?>
                             </select>
                         </div>
@@ -136,7 +136,7 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ window.location.replace('<?php echo URL::to("faq");?>'); }, 1000);
+                            setTimeout(function(){ window.location.replace('<?php echo URL::to("guru");?>'); }, 1000);
                         }
                         else {
                             notyfy({

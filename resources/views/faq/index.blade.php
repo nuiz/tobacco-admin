@@ -31,7 +31,10 @@
                     <tr>
                         <td class="center"><?php echo $item->faq_id;?></td>
                         <td><?php echo $item->faq_question;?></td>
-                        <td><a class="delete-btn" href="<?php echo URL::to("faq/delete?id={$item->faq_id}");?>">ลบ</a></td>
+                        <td>
+                            <a href="<?php echo URL::to("faq/edit?id={$item->faq_id}");?>">แก้ไข</a> /
+                            <a class="delete-btn" href="<?php echo URL::to("faq/delete?id={$item->faq_id}");?>">ลบ</a>
+                        </td>
                     </tr>
                     <?php }?>
                     </tbody>

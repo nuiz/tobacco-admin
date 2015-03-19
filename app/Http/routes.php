@@ -19,6 +19,7 @@ Route::controllers([
 	'auth' => 'Auth\AuthController',
 	'password' => 'Auth\PasswordController',
 	'login'=> 'LoginCTL',
+	'content/video'=> 'ContentVideoCTL',
 	'content'=> 'ContentCTL',
 	'logout'=> 'LogoutCTL',
 	'usercluster'=> 'UserClusterCTL',
@@ -27,5 +28,5 @@ Route::controllers([
 	'config'=> 'ConfigCTL',
 	'faq'=> 'FAQCTL',
 	'guru'=> 'GuruCTL',
-	'kmcenter'=> 'KmcenterCTL',
+	'kmcenter'=> 'KmcenterCTL'
 ]);

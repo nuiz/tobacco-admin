@@ -9,7 +9,7 @@
             <!-- Widget heading -->
             <div class="widget-head">
                 <h4 class="heading">
-                    <a href="<?php echo URL::to("guru/add");?>">เพิ่มศูนย์ KM</a>
+                    <a href="<?php echo URL::to("kmcenter/add");?>">เพิ่มศูนย์ KM</a>
                 </h4>
             </div>
             <!-- // Widget heading END -->

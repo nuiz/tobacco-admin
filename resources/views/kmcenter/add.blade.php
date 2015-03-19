@@ -18,35 +18,21 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">บัญชีผู้ใช้</label>
+                        <label class="col-sm-2 control-label">ชื่อศูนย์การเรียนรู้</label>
                         <div class="col-sm-10">
-                            <select type="text" id="account_id" name="account_id" class="form-control" required="">
-                                <?php foreach($users as $key=> $u){?>
-                                <option value="<?php echo $u->account_id;?>"><?php echo $u->firstname." ".$u->lastname;?></option>
-                                <?php }?>
-                            </select>
+                            <input type="text" id="kmcenter_name" name="kmcenter_name" class="form-control" placeholder="" required="">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">ประวัติ</label>
+                        <label class="col-sm-2 control-label">คำอธิบาย</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="guru_history" name="guru_history" class="form-control" placeholder="" required=""></textarea>
+                            <textarea type="text" id="kmcenter_description" name="kmcenter_description" class="form-control" placeholder="" required=""></textarea>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">category</label>
+                        <label class="col-sm-2 control-label">รูปแผนที่</label>
                         <div class="col-sm-10">
-                            <select type="text" id="guru_cat_id" name="guru_cat_id" class="form-control" required="">
-                                <?php foreach($category as $key=> $cat){?>
-                                <option value="<?php echo $cat->guru_cat_id;?>"><?php echo $cat->guru_cat_name;?></option>
-                                <?php }?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">โทรศัพท์</label>
-                        <div class="col-sm-10">
-                            <input type="text" id="guru_telephone" name="guru_telephone" class="form-control" placeholder="" required="">
+                            <input type="file" id="kmcenter_map_pic" name="kmcenter_map_pic" class="form-control" placeholder="" required="">
                         </div>
                     </div>
                     <div class="form-group">
@@ -136,7 +122,7 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ window.location.replace('<?php echo URL::to("faq");?>'); }, 1000);
+                            setTimeout(function(){ window.location.replace('<?php echo URL::to("kmcenter");?>'); }, 1000);
                         }
                         else {
                             notyfy({

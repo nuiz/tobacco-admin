@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">แก้ไขเนื้อหา(e-book)</h3>
+        <h3 class="">แก้ไขเนื้อหา(Video)</h3>
 
         <!-- Widget ---- -->
 
@@ -13,7 +13,7 @@
             {{--</div>--}}
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
-                <form class="form-horizontal" id="addebook-form" role="form" method="post" enctype="multipart/form-data">
+                <form class="form-horizontal" id="addvideo-form" role="form" method="post" enctype="multipart/form-data">
                     <div>
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
@@ -24,30 +24,11 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำอธิบาย</label>
+                        <label class="col-sm-2 control-label">คำอธิบายเนื้อหา</label>
                         <div class="col-sm-10">
                             <textarea type="text" name="content_description" class="form-control" placeholder="คำอธิบายเนื้อหา" required=""><?php echo $content->content_description;?></textarea>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">ชื่อผู้แต่ง</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="book_author" class="form-control" placeholder="ชื่อผู้แต่ง" value="<?php echo $content->book_author;?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">วันที่เผยแพร่</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="book_date" class="form-control" type="text" placeholder="yyyy-mm-dd" id="datepicker1" required="" value="<?php echo $content->book_date;?>">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">สำนักพิมพ์</label>
-                        <div class="col-sm-10">
-                            <input type="text" name="book_publishing_house" class="form-control" placeholder="สำนักพิมพ์" value="<?php echo $content->book_publishing_house;?>">
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <input type="hidden" name="category_id" id="category_id">
                         <label class="col-sm-2 control-label">หมวดหมู่</label>
@@ -55,61 +36,6 @@
 
                         </div>
                     </div>
-
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">ประเภทหนังสือ</label>
-                        <div class="col-sm-10">
-                            <select name="book_type_id" class="form-control">
-                                <?php foreach($book_types as $key=> $book){?>
-                                <option value="<?php echo $book->book_type_id;?>" <?php echo ($content->book_type_id==$book->book_type_id)? "selected": "";?>><?php echo $book->book_type_name;?></option>
-                                <?php }?>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">ไฟล์ e-book(pdf)</label>
-
-                        <div class="col-sm-10">
-                            <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
-                                <div class="input-group">
-                                    <div class="form-control col-md-3">
-                                        <i class="fa fa-file fileupload-exists"></i>
-                                        <span class="fileupload-preview"></span>
-                                    </div>
-                                                <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                <span class="fileupload-new">Select file</span>
-                                                <span class="fileupload-exists">Change</span>
-                                                <input type="file" name="book" class="margin-none" id="book-input"
-                                                    accept="application/pdf" />
-                                                </span><a href="#" class="btn fileupload-exists"
-                                                          data-dismiss="fileupload">Remove</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">หน้าปกหนังสือ</label>
-
-                        <div class="col-sm-10">
-                            <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
-                                <div class="input-group">
-                                    <div class="form-control col-md-3">
-                                        <i class="fa fa-file fileupload-exists"></i>
-                                        <span class="fileupload-preview"></span>
-                                    </div>
-                                                <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                <span class="fileupload-new">Select file</span>
-                                                <span class="fileupload-exists">Change</span>
-                                                <input type="file" name="book_cover" class="margin-none" id="book_cover-input" />
-                                                </span><a href="#" class="btn fileupload-exists"
-                                                          data-dismiss="fileupload">Remove</a></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="submit" class="btn btn-primary">Submit</button>
@@ -121,6 +47,17 @@
         </div>
     </div>
 
+    <style>
+        .thumb-list-wrap img {
+            height: 90px;
+            cursor: pointer;
+            margin: 5px;
+        }
+
+        .thumb-list-wrap img.selected {
+            box-shadow: 0 0 0px 3px rgba(255, 126, 0, 0.5);
+        }
+    </style>
 
     <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-switch/assets/lib/js/bootstrap-switch.js?v=v1.0.3-rc2");?>"></script>
     <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-switch/assets/custom/js/bootstrap-switch.init.js?v=v1.0.3-rc2");?>"></script>
@@ -151,10 +88,129 @@
 
     <script>
         $(function(){
+            function capture(video, scaleFactor) {
+                if(scaleFactor == null){
+                    scaleFactor = 1;
+                }
+                var w = video.videoWidth * scaleFactor;
+                var h = video.videoHeight * scaleFactor;
+                var canvas = document.createElement('canvas');
+                canvas.width  = w;
+                canvas.height = h;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(video, 0, 0, w, h);
+                return canvas;
+            }
+
+            function dataURItoBlob(dataURI) {
+                // convert base64/URLEncoded data component to raw binary data held in a string
+                var byteString;
+                if (dataURI.split(',')[0].indexOf('base64') >= 0)
+                    byteString = atob(dataURI.split(',')[1]);
+                else
+                    byteString = unescape(dataURI.split(',')[1]);
+
+                // separate out the mime component
+                var mimeString = dataURI.split(',')[0].split(':')[1].split(';')[0];
+
+                // write the bytes of the string to a typed array
+                var ia = new Uint8Array(byteString.length);
+                for (var i = 0; i < byteString.length; i++) {
+                    ia[i] = byteString.charCodeAt(i);
+                }
+
+                return new Blob([ia], {type:mimeString});
+            }
+
+            var $input = $('#video-input');
+            var $videoThumbWrapper = $('#video-thumb-wrapper');
+            var $videoListWrapper = $('#video-list-wrapper');
+
+            var URL = window.URL || window.webkitURL;
+
+            var blobVideos = [];
+            var blobThumbs = [];
+
+            $input.change(function(e){
+                var files = $input.get(0).files;
+                $videoThumbWrapper.empty();
+                $videoListWrapper.empty();
+                $(files).each(function(index, file){
+                    var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
+                    var $wrap = $('<div class=""><h4>'+file.name+'</h4></div>');
+                    $wrap.append($wrapThumb);
+                    $videoThumbWrapper.append($wrap);
+
+                    var fileURL = URL.createObjectURL(file);
+                    blobVideos[index] = file;
+                    var $video = $('<video></video>');
+                    $video.data("seq", index);
+
+//                    $img.data("seq", index);
+
+                    $videoListWrapper.append($video);
+//                    $wrapThumb.append($img);
+
+
+                    // config max thumbnail
+                    var iThumb = 0;
+                    var max = 8;
+
+
+                    function setThumb(iThumb, duration){
+                        var time = Math.floor((iThumb/max) * duration) + 1;
+                        $video.get(0).currentTime = time;
+                    }
+
+                    $video.bind('loadedmetadata', function(e){
+                        setThumb(iThumb, this.duration);
+                    });
+
+                    $video.bind('seeked', function(e){
+                        var canvas = capture(this, 1);
+                        var data = canvas.toDataURL("image/jpeg");
+                        var $img = $('<img src="'+data+'" style="height: 90px;">');
+                        $img.attr('src', data);
+                        $wrapThumb.append($img);
+
+                        if(iThumb==0){
+                            $('img', $wrapThumb).removeClass('selected');
+                            $img.addClass('selected');
+                            blobThumbs[index] = dataURItoBlob(data);
+                        }
+
+                        $img.click(function(){
+                            $('img', $wrapThumb).removeClass('selected');
+                            $img.addClass('selected');
+                            blobThumbs[index] = dataURItoBlob(data);
+                        });
+
+                        iThumb++;
+                        if(iThumb >= max)
+                            return;
+
+                        setThumb(iThumb, this.duration);
+                    });
+                    $video.attr('src', fileURL);
+                });
+            });
+
             // form submit
-            $('#addebook-form').submit(function(e){
+            $('#addvideo-form').submit(function(e){
                 e.preventDefault();
                 var fd = new FormData(this);
+//                var data = $img.attr('src');
+//                var blob = dataURItoBlob(data);
+//                fd.append("video_thumb", blob, 'thumb.jpeg');
+
+                $(blobVideos).each(function(index, blob){
+                    fd.append("videos["+index+"]", blob, index +".mp4");
+                });
+                $(blobThumbs).each(function(index, blob){
+                    fd.append("videos_thumb["+index+"]", blob, index +".jpeg");
+                });
+//                fd.append("thumbs", blobThumbs);
+//                fd.append("videos", blobVideos);
 
                 var inputs = $(":input", this);
                 inputs.prop("disabled", true);
@@ -222,8 +278,7 @@
                         $progress.addClass("hidden");
                     },
                     dataType: 'json',
-                    processData: false,
-                    contentType: false
+                    processData: false
                 });
 
                 return false;
@@ -240,7 +295,6 @@
             var $subSelect2 = $('<select class="form-control" style="display: none;"></select>');
 
             var i = 0;
-            var cat_id = <?php echo $content->category_id;?>;
             for(i=0;i<tree.data.length;i++){
                 $rootSelect.append('<option value="'+tree.data[i].category_id+'">'+tree.data[i].category_name+'</option>');
             }
@@ -322,39 +376,6 @@
             $wrapper.append($subSelect2);
 
             $rootSelect.change();
-
-            var j,k;
-            loop1:
-            for(i=0;i<tree.data.length;i++){
-                if(cat_id == tree.data[i].category_id){
-                    $rootSelect.val(cat_id);
-                    $rootSelect.change();
-                }
-                for(j=0;j<tree.data[i].children.length;j++){
-                    if(cat_id == tree.data[i].children[j].category_id){
-                        $rootSelect.val(tree.data[i].category_id);
-                        $rootSelect.change();
-
-                        $subSelect1.val(cat_id);
-                        $subSelect1.change();
-                        break loop1;
-                    }
-                    for(k=0;k<tree.data[i].children[j].children.length;k++){
-                        if(cat_id == tree.data[i].children[j].children[k].category_id){
-                            $rootSelect.val(tree.data[i].category_id);
-                            $rootSelect.change();
-
-                            $subSelect1.val(tree.data[i].children[j].category_id);
-                            $subSelect1.change();
-
-                            $subSelect2.val(cat_id);
-                            $subSelect2.change();
-                            break loop1;
-                        }
-                    }
-                }
-            }
-
         });
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>

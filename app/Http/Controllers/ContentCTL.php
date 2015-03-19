@@ -84,6 +84,27 @@ class ContentCTL extends Controller {
         }
     }
 
+    public function getEditvideo(){
+        $req = Request::createFromGlobals();
+        $category_tree = Api::get("/category/tree");
+        $content = Api::get("/content/".$req->input("id"));
+        return view("content/editvideo", ["category_tree"=> $category_tree, "content"=> $content]);
+    }
+
+    public function postEditvideo(){
+        $req = Request::createFromGlobals();
+
+        // user internal function edit video
+        $item = $this->_editVideo($req);
+
+        if($req->ajax()){
+            return json_encode($item);
+        }
+        else {
+            return redirect("content");
+        }
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");
@@ -155,7 +176,6 @@ class ContentCTL extends Controller {
     }
 
     public function _editBook(Request $req){
-
         /**
          * @var \Symfony\Component\HttpFoundation\File\UploadedFile $book
          */
@@ -170,6 +190,17 @@ class ContentCTL extends Controller {
             $input["book_cover"] = curl_file_create($book_cover->getRealPath(), $book_cover->getClientMimeType(), $book_cover->getClientOriginalName());
         }
         $input["content_type"] = "book";
+
+        $id = $req->input("id");
+
+        $res = \Unirest\Request::put(Api::BASE_URL."/content/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return $res->body;
+    }
+
+    public function _editVideo(Request $req){
+
+        $input = $req->input();
+        $input["content_type"] = "video";
 
         $id = $req->input("id");
 

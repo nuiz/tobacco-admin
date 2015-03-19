@@ -41,6 +41,26 @@ class FAQCTL extends Controller {
         }
     }
 
+    public function getEdit(){
+        $req = Request::createFromGlobals();
+        $apiRes = Api::get("/faq/".$req->input("id"));
+        return view("faq/edit", ["item"=> $apiRes]);
+    }
+
+    public function postEdit(){
+        $req = Request::createFromGlobals();
+
+        // user internal function add video
+        $item = $this->_edit($req);
+
+        if($req->ajax()){
+            return json_encode($item);
+        }
+        else {
+            return redirect("faq");
+        }
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");
@@ -52,6 +72,13 @@ class FAQCTL extends Controller {
     public function _add(Request $req){
         $input = $req->input();
         $res = \Unirest\Request::post(Api::BASE_URL."/faq?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return $res->body;
+    }
+
+    public function _edit(Request $req){
+        $input = $req->input();
+        $id = $req->input("id");
+        $res = \Unirest\Request::put(Api::BASE_URL."/faq/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
         return $res->body;
     }
 }

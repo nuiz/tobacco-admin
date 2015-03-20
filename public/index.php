@@ -6,6 +6,8 @@
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  */
 
+ini_set('safe_mode', false);
+
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

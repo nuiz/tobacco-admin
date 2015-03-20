@@ -51,7 +51,7 @@
                             <?php }else{?>
                             <a href="<?php echo URL::to("content/editbook?id={$item->content_id}");?>">แก้ไข</a> /
                             <?php }?>
-                            <a href="<?php echo URL::to("content/delete?id={$item->content_id}");?>">ลบ</a>
+                            <a class="delete-btn" href="<?php echo URL::to("content/delete?id={$item->content_id}");?>">ลบ</a>
                         </td>
                     </tr>
                     <?php }?>

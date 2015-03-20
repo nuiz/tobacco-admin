@@ -52,7 +52,6 @@
                         <th>thumb</th>
                         <th>video</th>
                         <th></th>
-                        <th></th>
                     </tr>
                     </thead>
                     <!-- // Table heading END -->
@@ -252,7 +251,7 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ /*window.location.replace('<?php //echo URL::to("content");?>');*/ window.reload(); }, 1000);
+                            setTimeout(function(){ /*window.location.replace('<?php //echo URL::to("content");?>');*/ window.location.reload(); }, 1000);
                         }
                         else {
                             notyfy({

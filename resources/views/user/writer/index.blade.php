@@ -11,6 +11,30 @@
             <!-- Widget heading -->
             <div class="widget-head">
                 <h4 class="heading"><a href="<?php echo URL::to('userwriter/add');?>">เพิ่ม writer</a></h4>
+                <div style="float: right; padding: 2px;">
+                    <form class="filter-form" method="get">
+                        <label>Cluster</label>
+                        <select name="cluster_id">
+                            <option value="">Cluster...</option>
+                            <?php
+                            $cluster_id = isset($_GET['cluster_id'])? $_GET['cluster_id']: null;
+                            foreach($clusters as $cluster){
+                                $selected = ($cluster->account_id == $cluster_id)? "selected": "";
+                                echo <<<HTML
+<option value="{$cluster->account_id}" {$selected}>{$cluster->firstname}</option>
+HTML;
+                            }?>
+                        </select>
+                    </form>
+                    <script>
+                        $(function(){
+                            var form = $('.filter-form');
+                            $('select', form).change(function(){
+                                form.submit();
+                            });
+                        });
+                    </script>
+                </div>
             </div>
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
@@ -21,6 +45,8 @@
                     <tr>
                         <th class="center">#</th>
                         <th>Username</th>
+                        <th>Name</th>
+                        <th>Cluster</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -31,6 +57,8 @@
                     <tr>
                         <th class="center"><?php echo $item->account_id;?></th>
                         <th><?php echo $item->username;?></th>
+                        <th><?php echo $item->firstname." ".$item->lastname;?></th>
+                        <th><?php echo $item->cluster->firstname;?></th>
                         <th>
                             <a class="delete-btn" href="<?php echo URL::to("userwriter/delete?id=".$item->account_id);?>">ลบ</a>
                         </th>

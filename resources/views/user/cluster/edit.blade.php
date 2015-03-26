@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ชื่อผู้ใช้</label>
                         <div class="col-sm-10">
-                            <input type="text" name="username" class="form-control" placeholder="username" disabled="" value="<?php echo $item->username;?>">
+                            <input type="text" name="username" class="form-control" placeholder="username" value="<?php echo $item->username;?>">
                         </div>
                     </div>
                     <div class="form-group">

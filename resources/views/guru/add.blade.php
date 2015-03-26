@@ -20,12 +20,32 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">บัญชีผู้ใช้</label>
                         <div class="col-sm-10">
-                            <select type="text" id="account_id" name="account_id" class="form-control" required="">
-                                <?php foreach($users as $key=> $u){?>
-                                <option value="<?php echo $u->account_id;?>"><?php echo "{$u->firstname} {$u->lastname} ({$u->username})";?></option>
-                                <?php }?>
-                            </select>
+                            <select id="account_id" name="account_id" class="select2" required="" placeholder="Find account..."></select>
                         </div>
+                        <script>
+                            $(function(){
+                                var users = <?php echo json_encode($users);?>;
+                                console.log(users);
+                                $('.select2').selectize({
+                                    valueField: 'account_id',
+                                    searchField: ['username', 'firstname', 'lastname'],
+                                    options: users,
+                                    create: false,
+                                    render: {
+                                        item: function(item, escape){
+                                            return '<div>'+escape(item.firstname) +' '+ item.lastname+ '<div>';
+                                        },
+                                        option: function(item, escape) {
+                                            return '<div>' +
+                                                    '<span class="title">' +
+                                                    '<span class="name">' + escape(item.firstname) +' '+ item.lastname +'</span>' +
+                                                    '</span>' +
+                                                    '</div>';
+                                        }
+                                    }
+                                });
+                            });
+                        </script>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ประวัติ</label>
@@ -87,8 +107,14 @@
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/farbtastic.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/colorpicker-farbtastic.init.js?v=v1.0.3-rc2");?>"></script>
 
+    <script src="<?php echo URL::to("assets/selectize.js/dist/js/standalone/selectize.min.js");?>"></script>
+    <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.bootstrap3.css");?>">
+
     <script>
         $(function(){
+
+            //$('select').select2();
+
             // form submit
             $('#addnews-form').submit(function(e){
                 e.preventDefault();

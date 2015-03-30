@@ -32,7 +32,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ชื่อผู้แต่ง</label>
                         <div class="col-sm-10">
-                            <input type="text" name="boon_author" class="form-control" placeholder="ชื่อผู้แต่ง" >
+                            <input type="text" name="book_author" class="form-control" placeholder="ชื่อผู้แต่ง" >
                         </div>
                     </div>
                     <div class="form-group">

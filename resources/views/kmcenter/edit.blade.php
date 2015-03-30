@@ -2,14 +2,14 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">แก้ไข FAQ</h3>
+        <h3 class="">เพิ่มศูนย์ KM</h3>
 
         <!-- Widget ---- -->
 
         <div class="widget">
             <!-- Widget heading -->
             {{--<div class="widget-head">--}}
-                {{--<h4 class="heading"><a href="">add video</a></h4>--}}
+            {{--<h4 class="heading"><a href="">add video</a></h4>--}}
             {{--</div>--}}
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
@@ -18,19 +18,21 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำถาม</label>
+                        <label class="col-sm-2 control-label">ชื่อศูนย์การเรียนรู้</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_question" name="faq_question" class="form-control" placeholder="" required="">
-                                <?php echo $item->faq_question;?>
-                            </textarea>
+                            <input type="text" id="kmcenter_name" name="kmcenter_name" class="form-control" placeholder="" required="" value="<?php echo $item->kmcenter_name;?>">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">คำตอบ</label>
+                        <label class="col-sm-2 control-label">คำอธิบาย</label>
                         <div class="col-sm-10">
-                            <textarea type="text" id="faq_answer" name="faq_answer" class="form-control" placeholder="" required="">
-                                <?php echo $item->faq_answer;?>
-                            </textarea>
+                            <textarea type="text" id="kmcenter_description" name="kmcenter_description" class="form-control" placeholder="" required=""><?php echo $item->kmcenter_description;?></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">รูปแผนที่</label>
+                        <div class="col-sm-10">
+                            <input type="file" id="kmcenter_map_pic" name="kmcenter_map_pic" class="form-control" placeholder="">
                         </div>
                     </div>
                     <div class="form-group">
@@ -120,7 +122,7 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ window.location.replace('<?php echo URL::to("faq");?>'); }, 1000);
+                            setTimeout(function(){ window.location.replace('<?php echo URL::to("kmcenter");?>'); }, 1000);
                         }
                         else {
                             notyfy({

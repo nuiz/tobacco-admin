@@ -31,7 +31,10 @@
                     <tr>
                         <td class="center"><?php echo $item->kmcenter_id;?></td>
                         <td><?php echo $item->kmcenter_name;?></td>
-                        <td><a class="delete-btn" href="<?php echo URL::to("kmcenter/delete?id={$item->kmcenter_id}");?>">ลบ</a></td>
+                        <td>
+                            <a href="<?php echo URL::to("kmcenter/edit?id={$item->kmcenter_id}");?>">แก้ไข</a> /
+                            <a class="delete-btn" href="<?php echo URL::to("kmcenter/delete?id={$item->kmcenter_id}");?>">ลบ</a>
+                        </td>
                     </tr>
                     <?php }?>
                     </tbody>

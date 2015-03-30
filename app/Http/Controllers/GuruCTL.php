@@ -19,8 +19,9 @@ class GuruCTL extends Controller {
     }
 
     public function getIndex(){
-        $apiRes = Api::get("/guru");
-        return view("guru/index", ['items'=> $apiRes->data]);
+        $apiRes = Api::get("/guru?".http_build_query($_GET));
+        $resCat = Api::get("/guru/category?limit=100");
+        return view("guru/index", ['items'=> $apiRes->data, "category"=> $resCat->data]);
     }
 
     public function getAdd(){

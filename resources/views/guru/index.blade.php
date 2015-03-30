@@ -14,6 +14,33 @@
             </div>
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
+
+                <div style="float: right; width: 500px; margin-top: -14px;">
+                    <form method="get" class="form-inline form-filter" style="line-height: 37px;">
+                        <div class="row">
+                            <div class="col-md-4 text-right">Category</div>
+                            <div class="col-md-8">
+                                <select name="guru_cat_id" class="select2" placeholder="Category">
+                                    <option value="">-- Category --</option>
+                                    <?php
+                                    $catId = isset($_GET['guru_cat_id'])? $_GET['guru_cat_id']: false;
+                                    foreach($category as $cat){?>
+                                    <option value="<?php echo $cat->guru_cat_id;?>"
+                                        <?php echo $cat->guru_cat_id==$catId? "selected": "";?>><?php echo $cat->guru_cat_name;?></option>
+                                    <?php }?>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    <script>
+                        $(function(){
+                            $('.select2').change(function(){
+                                $('.form-filter').submit();
+                            });
+                        });
+                    </script>
+                </div>
+
                 <!-- Table -->
                 <table class="table table-bordered table-primary">
                     <!-- Table heading -->

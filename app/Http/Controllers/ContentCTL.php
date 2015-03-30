@@ -19,8 +19,9 @@ class ContentCTL extends Controller {
     }
 
     public function getIndex(){
-        $res = Api::get("/content");
-        return view("content/index", ['items'=> $res->data]);
+        $res = Api::get("/content?".http_build_query($_GET));
+        $catRes = Api::get("/category/all");
+        return view("content/index", ['items'=> $res->data, "category"=> $catRes->data]);
     }
 
     public function getAddvideo(){

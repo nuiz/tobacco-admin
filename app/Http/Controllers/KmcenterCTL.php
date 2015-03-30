@@ -41,6 +41,29 @@ class KmcenterCTL extends Controller {
         }
     }
 
+    public function getEdit(){
+        $req = Request::createFromGlobals();
+        $id = $req->input('id');
+
+        $item = Api::get("/kmcenter/".$id);
+
+        return view("kmcenter/edit", ['item'=> $item]);
+    }
+
+    public function postEdit(){
+        $req = Request::createFromGlobals();
+
+        // user internal function add video
+        $item = $this->_edit($req);
+
+        if($req->ajax()){
+            return json_encode($item);
+        }
+        else {
+            return redirect("kmcenter");
+        }
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");
@@ -54,6 +77,14 @@ class KmcenterCTL extends Controller {
         $map = $req->file("kmcenter_map_pic");
         $input["kmcenter_map_pic"] = curl_file_create($map->getRealPath(), $map->getClientMimeType(), $map->getClientOriginalName());
         $res = \Unirest\Request::post(Api::BASE_URL."/kmcenter?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return $res->body;
+    }
+
+    public function _edit(Request $req){
+        $input = $req->input();
+        $id = $req->input('id');
+
+        $res = \Unirest\Request::put(Api::BASE_URL."/kmcenter/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
         return $res->body;
     }
 }

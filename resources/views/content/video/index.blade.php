@@ -49,6 +49,7 @@
                     <thead>
                     <tr>
                         <th class="center"></th>
+                        <th>name</th>
                         <th>thumb</th>
                         <th>video</th>
                         <th></th>
@@ -58,8 +59,9 @@
                     <!-- Table body -->
                     <tbody id="sortable-items">
                     <?php foreach($content->videos as $key=> $item){?>
-                    <tr>
-                        <td class="center"><?php echo $item->id;?></td>
+                    <tr item-id="<?php echo $item->id;?>">
+                        <td class="center"><i class="glyphicon glyphicon-align-justify drag-handle"></i><?php //echo $item->id;?></td>
+                        <td><?php echo $item->video_name;?></td>
                         <td><img src="<?php echo $item->video_thumb_url;?>" width="64"></td>
                         <td><a class="prettyP" href="<?php echo $item->video_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $content->content_description;?>">แสดงผล</a></td>
                         <td><a class="delete-btn" href="<?php echo URL::to("content/video/delete?id={$item->id}&content_id={$content->content_id}");?>">ลบ</a></td>
@@ -75,6 +77,9 @@
 
     <link rel="stylesheet" href="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css");?>">
     <script src="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js");?>"></script>
+
+    <script src="<?php echo URL::to("/assets/Sortable/Sortable.min.js");?>"></script>
+
     <script>
         $("a[rel^='prettyPhoto']").prettyPhoto({
             custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
@@ -87,7 +92,28 @@
                 return false;
             }
         });
+
+        var el = document.getElementById('sortable-items');
+        var sortable = Sortable.create(el, {
+            handle: ".drag-handle",
+            animation: 200,
+            onUpdate: function (/**Event*/ evt) {
+                console.log(evt);
+                var rows = $('#sortable-items tr');
+                var id = [];
+                rows.each(function(index, el){
+                    id.push($(el).attr("item-id"));
+                });
+                var send = {list_id: id, content_id: <?php echo $_GET['content_id'];?>};
+                $.post("<?php echo URL::to("/content/video/sort");?>", send, function(data){
+
+                    // bla bla bla
+
+                }, "json");
+            }
+        });
     </script>
+
     <script>
         $(function(){
             function capture(video, scaleFactor) {
@@ -139,7 +165,7 @@
                 $videoListWrapper.empty();
                 $(files).each(function(index, file){
                     var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
-                    var $wrap = $('<div class=""><h4>'+file.name+'</h4></div>');
+                    var $wrap = $('<div><strong>video name</strong><br /> <input name="videos_name[]" value="'+file.name+'"></div>');
                     $wrap.append($wrapThumb);
                     $videoThumbWrapper.append($wrap);
 
@@ -280,6 +306,8 @@
 
                 return false;
             });
+
+            window.document.getElementById
         });
     </script>
 

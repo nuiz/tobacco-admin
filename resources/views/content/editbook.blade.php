@@ -49,6 +49,25 @@
                     </div>
 
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">สถานที่เก็บหนังสือ</label>
+                        <div class="col-sm-10">
+                            <select id="book_places" name="book_places[]" class="select2" placeholder="สถานที่เก็บหนังสือ" multiple>
+                                <?php foreach($book_place->data as $key=> $value){?>
+                                <option value="<?php echo $value->book_place_name;?>"
+                                    <?php if(in_array($value->book_place_name, $content->book_places)){ echo "selected"; }?>>
+                                    <?php echo $value->book_place_name;?>
+                                </option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    <script>
+                        $(function(){
+                            $('.select2').selectize();
+                        });
+                    </script>
+
+                    <div class="form-group">
                         <input type="hidden" name="category_id" id="category_id">
                         <label class="col-sm-2 control-label">หมวดหมู่</label>
                         <div class="col-sm-10" id="category-wrapper">
@@ -148,6 +167,10 @@
     <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-timepicker/assets/custom/js/bootstrap-timepicker.init.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/farbtastic.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/colorpicker-farbtastic.init.js?v=v1.0.3-rc2");?>"></script>
+
+    <script src="<?php echo URL::to("assets/selectize.js/dist/js/standalone/selectize.min.js");?>"></script>
+    <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.css");?>">
+    <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.default.css");?>">
 
     <script>
         $(function(){

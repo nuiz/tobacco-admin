@@ -40,12 +40,29 @@
                         <div class="col-sm-10">
                             <input type="text" name="book_date" class="form-control" type="text" placeholder="yyyy-mm-dd" id="datepicker1" required="">
                         </div>
-                    </div><div class="form-group">
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">สำนักพิมพ์</label>
                         <div class="col-sm-10">
                             <input type="text" name="book_publishing_house" class="form-control" placeholder="สำนักพิมพ์" >
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">สถานที่เก็บหนังสือ</label>
+                        <div class="col-sm-10">
+                            <select id="book_places" name="book_places[]" class="select2" placeholder="สถานที่เก็บหนังสือ" multiple>
+                                <?php foreach($book_place->data as $key=> $value){?>
+                                <option value="<?php echo $value->book_place_name;?>"><?php echo $value->book_place_name;?></option>
+                                <?php }?>
+                            </select>
+                        </div>
+                    </div>
+                    <script>
+                    $(function(){
+                        $('.select2').selectize();
+                    });
+                    </script>
 
                     <div class="form-group">
                         <input type="hidden" name="category_id" id="category_id">
@@ -58,7 +75,7 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ประเภทหนังสือ</label>
                         <div class="col-sm-10">
-                            <select name="category_id" class="form-control">
+                            <select name="book_type_id" class="form-control">
                                 <?php foreach($book_types as $key=> $book){?>
                                 <option value="<?php echo $book->book_type_id;?>"><?php echo $book->book_type_name;?></option>
                                 <?php }?>
@@ -147,6 +164,10 @@
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/farbtastic.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/colorpicker-farbtastic.init.js?v=v1.0.3-rc2");?>"></script>
 
+    <script src="<?php echo URL::to("assets/selectize.js/dist/js/standalone/selectize.min.js");?>"></script>
+    <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.css");?>">
+    <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.default.css");?>">
+
     <script>
         $(function(){
             // form submit
@@ -161,7 +182,6 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '',
                     data: fd,
                     contentType: false,
                     xhr: function()

@@ -154,7 +154,7 @@
                 $videoListWrapper.empty();
                 $(files).each(function(index, file){
                     var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
-                    var $wrap = $('<div class=""><h4>'+file.name+'</h4></div>');
+                    var $wrap = $('<div><strong>video name</strong><br /> <input name="videos_name[]" value="'+file.name+'"></div>');
                     $wrap.append($wrapThumb);
                     $videoThumbWrapper.append($wrap);
 

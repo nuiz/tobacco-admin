@@ -45,7 +45,8 @@ class ContentCTL extends Controller {
     public function getAddbook(){
         $category_tree = Api::get("/category/tree");
         $book_type = Api::get("/book_type");
-        return view("content/addbook", ["category_tree"=> $category_tree, "book_types"=> $book_type->data]);
+        $book_place = Api::get("/book_place");
+        return view("content/addbook", ["category_tree"=> $category_tree, "book_types"=> $book_type->data, "book_place"=> $book_place]);
     }
 
     public function postAddbook(){
@@ -66,8 +67,9 @@ class ContentCTL extends Controller {
         $req = Request::createFromGlobals();
         $category_tree = Api::get("/category/tree");
         $book_type = Api::get("/book_type");
+        $book_place = Api::get("/book_place");
         $content = Api::get("/content/".$req->input("id"));
-        return view("content/editbook", ["category_tree"=> $category_tree, "book_types"=> $book_type->data, "content"=> $content]);
+        return view("content/editbook", ["category_tree"=> $category_tree, "book_types"=> $book_type->data, "content"=> $content, "book_place"=> $book_place]);
     }
 
     public function postEditbook(){

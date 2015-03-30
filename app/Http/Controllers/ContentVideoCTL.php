@@ -48,6 +48,31 @@ class ContentVideoCTL extends Controller {
         return json_encode($res->body);
     }
 
+    public function postUpdate(){
+        $req = Request::createFromGlobals();
+        /**
+         * @var \Symfony\Component\HttpFoundation\File\UploadedFile $video
+         */
+
+        $id = $req->input("id");
+
+        $input = $req->input();
+        $res = \Unirest\Request::post(Api::BASE_URL."/content/video/{$id}/sort?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return json_encode($res->body);
+    }
+
+    public function postSort(){
+        $req = Request::createFromGlobals();
+        /**
+         * @var \Symfony\Component\HttpFoundation\File\UploadedFile $video
+         */
+
+        $input = $req->input();
+        $content_id = $input['content_id'];
+        $res = \Unirest\Request::post(Api::BASE_URL."/content/{$content_id}/video/sort?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        return json_encode($res->body);
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");

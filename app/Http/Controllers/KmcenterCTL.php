@@ -83,6 +83,11 @@ class KmcenterCTL extends Controller {
     public function _edit(Request $req){
         $input = $req->input();
         $id = $req->input('id');
+        $map = $req->file("kmcenter_map_pic");
+
+        if(!is_null($map)){
+            $input["kmcenter_map_pic"] = curl_file_create($map->getRealPath(), $map->getClientMimeType(), $map->getClientOriginalName());
+        }
 
         $res = \Unirest\Request::put(Api::BASE_URL."/kmcenter/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
         return $res->body;

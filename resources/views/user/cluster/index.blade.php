@@ -19,8 +19,8 @@
                     <!-- Table heading -->
                     <thead>
                     <tr>
-                        <th class="center">#</th>
-                        <th>Username</th>
+                        <th class="center">วันที่เพิ่ม</th>
+                        <th>บัญชีผู้ใช้</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -29,7 +29,7 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php echo $item->account_id;?></th>
+                        <th class="center"><?php $dtString = date("d/m/Y - H:i", strtotime($item->created_at)); echo $dtString;?></th>
                         <th><?php echo $item->username;?></th>
                         <th>
                             <a href="<?php echo URL::to("usercluster/edit?id=".$item->account_id);?>">แก้ไข</a> /

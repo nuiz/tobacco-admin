@@ -43,10 +43,10 @@ HTML;
                     <!-- Table heading -->
                     <thead>
                     <tr>
-                        <th class="center">#</th>
-                        <th>Username</th>
-                        <th>Name</th>
-                        <th>Cluster</th>
+                        <th class="center">วันที่เพิ่ม</th>
+                        <th>บัญชีผู้ใช้</th>
+                        <th>ชื่อ</th>
+                        <th>กลุ่ม</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -55,7 +55,7 @@ HTML;
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php echo $item->account_id;?></th>
+                        <th class="center"><?php $dtString = date("d/m/Y - H:i", strtotime($item->created_at)); echo $dtString;?></th>
                         <th><?php echo $item->username;?></th>
                         <th><?php echo $item->firstname." ".$item->lastname;?></th>
                         <th><?php echo $item->cluster->firstname;?></th>

@@ -21,7 +21,7 @@
                     <label class="col-sm-2 control-label">ไฟล์ Video(mp4)</label>
 
                     <div class="col-sm-10">
-                        <input type="file" id="video-input" class="form-control" multiple required="">
+                        <input type="file" id="video-input" class="form-control" multiple required="" accept="video/mp4">
                         <div id="video-thumb-wrapper"></div>
                         <div id="video-list-wrapper" class="hidden"></div>
                     </div>
@@ -320,6 +320,13 @@
 
         .thumb-list-wrap img.selected {
             box-shadow: 0 0 0px 3px rgba(255, 126, 0, 0.5);
+        }
+    </style>
+    <style>
+        div.pp_details .pp_nav {
+            width: 0;
+            height: 0;
+            overflow: hidden;
         }
     </style>
 

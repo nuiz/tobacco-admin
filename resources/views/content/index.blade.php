@@ -47,7 +47,7 @@
                     <!-- Table heading -->
                     <thead>
                     <tr>
-                        <th class="center"></th>
+                        <th class="center">วันที่สร้าง</th>
                         <th>ชื่อเนื้อหา</th>
                         <th>ประเภท</th>
                         <th>หมวดหมู่</th>
@@ -60,7 +60,7 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <td class="center"><?php echo $item->content_id;?></td>
+                        <td class="center"><?php $dtString = date('d/m/Y H:i', $item->created_at); echo $dtString;?></td>
                         <td><?php echo $item->content_name;?></td>
                         <td><?php echo $item->content_type;?></td>
                         <td><?php echo $item->category_name;?></td>
@@ -109,5 +109,12 @@
             }
         });
     </script>
+    <style>
+        div.pp_details .pp_nav {
+            width: 0;
+            height: 0;
+            overflow: hidden;
+        }
+    </style>
 
 @endsection

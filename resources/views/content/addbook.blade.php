@@ -118,7 +118,7 @@
                                                 <span class="btn btn-default btn-file">
                                                 <span class="fileupload-new">Select file</span>
                                                 <span class="fileupload-exists">Change</span>
-                                                <input type="file" name="book_cover" class="margin-none" id="book_cover-input" required=""/>
+                                                <input type="file" name="book_cover" class="margin-none" id="book_cover-input" required="" accept="image/jpeg" />
                                                 </span><a href="#" class="btn fileupload-exists"
                                                           data-dismiss="fileupload">Remove</a></span>
                                 </div>

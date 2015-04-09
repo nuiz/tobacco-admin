@@ -26,6 +26,11 @@ class ContentCTL extends Controller {
 
     public function getAddvideo(){
         $category_tree = Api::get("/category/tree");
+//        $res = Api::get("/config");
+//        $config = [];
+//        foreach($res as $key=> $value){
+//            $config[$value->config_name] = $value->config_value;
+//        }
         return view("content/addvideo", ["category_tree"=> $category_tree]);
     }
 

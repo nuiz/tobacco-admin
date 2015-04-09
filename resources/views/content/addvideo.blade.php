@@ -40,7 +40,7 @@
                         <label class="col-sm-2 control-label">ไฟล์ Video(mp4)</label>
 
                         <div class="col-sm-10">
-                            <input type="file" id="video-input" class="form-control" multiple required="">
+                            <input type="file" id="video-input" class="form-control" multiple required="" value="" accept="video/mp4">
                             <div id="video-thumb-wrapper"></div>
                             <div id="video-list-wrapper" class="hidden"></div>
                         </div>
@@ -49,7 +49,7 @@
                         <label class="col-sm-2 control-label">แนบไฟล์</label>
 
                         <div class="col-sm-10">
-                            <input type="file"  class="form-control" name="attach_files[]" multiple>
+                            <input type="file"  class="form-control" name="attach_files[]" multiple value="">
                         </div>
                     </div>
 

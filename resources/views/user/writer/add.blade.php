@@ -32,7 +32,7 @@
                                         option: function(item, escape) {
                                             return '<div>' +
                                                     '<span class="title">' +
-                                                    '<span class="name">' + escape(item.firstname) +' '+ item.lastname +'</span>' +
+                                                    '<span class="name">['+ escape(item.username) +'] '+ escape(item.firstname) +' '+ item.lastname +'</span>' +
                                                     '</span>' +
                                                     '</div>';
                                         }

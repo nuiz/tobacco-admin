@@ -140,5 +140,6 @@
     <script src="<?php echo URL::to("/assets/components/core/js/sidebar.main.init.js?v=v1.0.3-rc2");?>"></script>
     <script src="<?php echo URL::to("/assets/components/core/js/sidebar.discover.init.js?v=v1.0.3-rc2");?>"></script>
     <script src="<?php echo URL::to("/assets/components/core/js/core.init.js?v=v1.0.3-rc2");?>"></script>
+</div>
 </body>
 </html>

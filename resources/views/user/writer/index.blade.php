@@ -55,7 +55,7 @@ HTML;
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php $dtString = date("d/m/Y - H:i", strtotime($item->created_at)); echo $dtString;?></th>
+                        <th class="center"><?php $dtString = date("d/m/Y", strtotime($item->created_at)); echo $dtString;?></th>
                         <th><?php echo $item->username;?></th>
                         <th><?php echo $item->firstname." ".$item->lastname;?></th>
                         <th><?php echo $item->cluster->firstname;?></th>

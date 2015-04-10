@@ -29,7 +29,7 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php $dtString = date("d/m/Y - H:i", strtotime($item->created_at)); echo $dtString;?></th>
+                        <th class="center"><?php $dtString = date("d/m/Y", strtotime($item->created_at)); echo $dtString;?></th>
                         <th><?php echo $item->username;?></th>
                         <th>
                             <a href="<?php echo URL::to("usercluster/edit?id=".$item->account_id);?>">แก้ไข</a> /

@@ -16,18 +16,40 @@
             </div>
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
-                <div style="float: right; width: 500px; margin-top: -14px;">
-                    <form method="get" class="form-inline form-filter" style="line-height: 37px;">
+                <div>
+                    <form method="get" class="form-filter" style="line-height: 37px;">
                         <div class="row">
-                            <div class="col-md-4 text-right">Category</div>
-                            <div class="col-md-8">
+                            <div class="col-md-6">
+                                <label>ชื่อเนื้อหา</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="col-md-6">
+                                <label>วันที่</label>
+                                <div class="row">
+                                    <div class="col-md-5"><input type="text" class="form-control"></div>
+                                    <div class="col-md-1 text-center">ถึง</div>
+                                    <div class="col-md-5"><input type="text" class="form-control"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>ประเภทเนื้อหา</label>
+                                <select name="category_id" class="form-control">
+                                    <option value="">All</option>
+                                    <option value="video">Video</option>
+                                    <option value="book">E-Book</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label>Category</label>
                                 <select name="category_id" class="select2" placeholder="Category">
                                     <option></option>
                                     <?php
                                     $catId = isset($_GET['category_id'])? $_GET['category_id']: false;
                                     foreach($category as $cat){?>
                                     <option value="<?php echo $cat->category_id;?>"
-                                        <?php echo $cat->category_id==$catId? "selected": "";?>><?php echo $cat->category_name;?></option>
+                                    <?php echo $cat->category_id==$catId? "selected": "";?>><?php echo $cat->category_name;?></option>
                                     <?php }?>
                                 </select>
                             </div>

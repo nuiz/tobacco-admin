@@ -102,6 +102,7 @@
                                                           data-dismiss="fileupload">Remove</a></span>
                                 </div>
                             </div>
+                            <p class="help-block">อนุญาติให้เฉพาะไฟล์นามสกุล pdf</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -118,11 +119,12 @@
                                                 <span class="btn btn-default btn-file">
                                                 <span class="fileupload-new">Select file</span>
                                                 <span class="fileupload-exists">Change</span>
-                                                <input type="file" name="book_cover" class="margin-none" id="book_cover-input" required="" accept="image/jpeg" />
+                                                <input type="file" name="book_cover" class="margin-none" id="book_cover-input" required="" accept="image/jpeg, image/png" />
                                                 </span><a href="#" class="btn fileupload-exists"
                                                           data-dismiss="fileupload">Remove</a></span>
                                 </div>
                             </div>
+                            <p class="help-block">อนุญาติให้เฉพาะไฟล์นามสกุล jpeg,jpg,png</p>
                         </div>
                     </div>
                     <div class="form-group">

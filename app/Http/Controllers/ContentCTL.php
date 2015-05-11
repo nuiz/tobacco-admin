@@ -117,7 +117,9 @@ class ContentCTL extends Controller {
         $req = Request::createFromGlobals();
         $id = $req->input("id");
         $res = \Unirest\Request::delete(Api::BASE_URL."/content/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb");
-        return redirect("content");
+        $redir = @$_SERVER["HTTP_REFERER"];
+        if(!$redir) $redir = "content";
+        return redirect($redir);
     }
 
     // internal function

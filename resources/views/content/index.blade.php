@@ -21,46 +21,60 @@
                         <div class="row">
                             <div class="col-md-6">
                                 <label>ชื่อเนื้อหา</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="keyword" value="<?php if(isset($_GET['keyword'])) echo $_GET['keyword'];?>">
                             </div>
                             <div class="col-md-6">
                                 <label>วันที่</label>
                                 <div class="row">
-                                    <div class="col-md-5"><input type="text" class="form-control"></div>
+                                    <div class="col-md-5"><input type="text" class="form-control" id="datepicker1" name="date_start" value="<?php if(isset($_GET['date_start'])) echo $_GET['date_start'];?>"></div>
                                     <div class="col-md-1 text-center">ถึง</div>
-                                    <div class="col-md-5"><input type="text" class="form-control"></div>
+                                    <div class="col-md-5"><input type="text" class="form-control" id="datepicker2" name="date_end" value="<?php if(isset($_GET['date_end'])) echo $_GET['date_end'];?>"></div>
                                 </div>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6">
                                 <label>ประเภทเนื้อหา</label>
-                                <select name="category_id" class="form-control">
+                                <select name="content_type" class="form-control">
                                     <option value="">All</option>
-                                    <option value="video">Video</option>
-                                    <option value="book">E-Book</option>
+                                    <option value="video" <?php if(isset($_GET['category_id']) && $_GET['category_id']=='video') echo "selected";?>>Video</option>
+                                    <option value="book" <?php if(isset($_GET['category_id']) && $_GET['category_id']=='book') echo "selected";?>>E-Book</option>
                                 </select>
                             </div>
                             <div class="col-md-6">
                                 <label>Category</label>
                                 <select name="category_id" class="select2" placeholder="Category">
-                                    <option></option>
+                                    <option value="0">All</option>
                                     <?php
                                     $catId = isset($_GET['category_id'])? $_GET['category_id']: false;
+                                    function printCatName($cat, $category){
+                                        if($cat->parent_id > 0){
+                                            foreach($category as $value){
+                                                if($value->category_id === $cat->parent_id){
+                                                    return printCatName($value, $category)." > ".$cat->category_name;
+                                                }
+                                            }
+                                            return $cat->category_name;
+                                        }
+                                        return $cat->category_name;
+                                    }
+
                                     foreach($category as $cat){?>
                                     <option value="<?php echo $cat->category_id;?>"
-                                    <?php echo $cat->category_id==$catId? "selected": "";?>><?php echo $cat->category_name;?></option>
+                                    <?php echo $cat->category_id==$catId? "selected": "";?>><?php echo printCatName($cat, $category);//$cat->category_name;?></option>
                                     <?php }?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row text-left" style="margin-bottom: 20px;">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-warning">Search</button>
                             </div>
                         </div>
                     </form>
                     <script>
                         $(function(){
                             $('.select2').selectize();
-                            $('.select2').change(function(){
-                                $('.form-filter').submit();
-                            });
                         });
                     </script>
                 </div>
@@ -115,10 +129,24 @@
     <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.css");?>">
     <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.bootstrap3.css");?>">
 
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+
     <link rel="stylesheet" href="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css");?>">
     <script src="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js");?>"></script>
 
     <script>
+        if (typeof $.fn.bdatepicker == 'undefined')
+            $.fn.bdatepicker = $.fn.datepicker.noConflict();
+
+        $(function(){
+            $("#datepicker1").bdatepicker({
+                format: 'yyyy-mm-dd'
+            });
+            $("#datepicker2").bdatepicker({
+                format: 'yyyy-mm-dd'
+            });
+        });
+
         $("a[rel^='prettyPhoto']").prettyPhoto({
             custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
             social_tools: false

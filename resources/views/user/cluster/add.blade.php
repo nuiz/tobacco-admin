@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">เพิ่ม Cluster</h3>
+        <h3 class="">เพิ่มผู้ใช้งานกลุ่มภาระกิจ</h3>
 
         <!-- Widget ---- -->
 
@@ -13,15 +13,27 @@
                         <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">ชื่อผู้ใช้</label>
+                        <label class="col-sm-2 control-label">บัญชีผู้ใช้</label>
                         <div class="col-sm-10">
-                            <input type="text" name="username" class="form-control" placeholder="username" required="">
+                            <input type="text" name="username" class="form-control" placeholder="บัญชีผู้ใช้" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ชื่อ</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="firstname" class="form-control" placeholder="ชื่อ" required="">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">รหัสผ่าน</label>
                         <div class="col-sm-10">
-                            <input type="text" name="password" class="form-control" placeholder="password" required="">
+                            <input type="password" name="password" id="password-input" class="form-control" placeholder="password" required="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ยืนยันรหัสผ่าน</label>
+                        <div class="col-sm-10">
+                            <input type="password" id="password_repeat-input" class="form-control" placeholder="repeat-password" required="">
                         </div>
                     </div>
                     <div class="form-group">
@@ -65,9 +77,29 @@
 
     <script>
         $(function(){
+            var password_match = false;
+
+            $('#password-input, #password_repeat-input').on('input', function(event){
+                var pass = $('#password-input');
+                var pass_repeat = $('#password_repeat-input');
+
+                if(pass.val() != pass_repeat.val()){
+                    password_match = false;
+                    pass_repeat.css({color: 'red'});
+                }
+                else {
+                    password_match = true;
+                    pass_repeat.css({color: ''});
+                }
+            });
+
             // form submit
             $('#addvideo-form').submit(function(e){
                 e.preventDefault();
+
+                // if not repeat password return function
+                if(!password_match) return;
+
                 var fd = new FormData(this);
 
                 var inputs = $(":input", this);

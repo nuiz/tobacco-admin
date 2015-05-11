@@ -19,7 +19,7 @@ class LoginCTL extends Controller {
     public function postIndex(Request $request){
         $res = \Unirest\Request::post(Api::BASE_URL."/login", [], $request->input());
         $data = $res->body;
-        if(!isset($data->error)){
+        if(!isset($data->error) && $data->level_id!=0){
             Session::put("userlogin", $data);
             return redirect(URL::to("/content"));
         }

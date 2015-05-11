@@ -49,7 +49,7 @@
                 <?php if(in_array($u->level_id, [1, 2])){?>
                 <li><a class="glyphicons user" href="<?php echo URL::to("/usercluster");?>"><i></i><span>ผู้ใช้งาน(Cluster)</span></a></li>
                 <?php }?>
-                <?php if(in_array($u->level_id, [1, 2, 3])){?>
+                <?php if(in_array($u->level_id, [3])){?>
                 <li><a class="glyphicons user" href="<?php echo URL::to("/userwriter");?>"><i></i><span>ผู้ใช้งาน(Writer)</span></a></li>
                 <?php }?>
                 <li><a class="glyphicons notes_2" href="<?php echo URL::to("/content");?>"><i></i><span>เนื้อหา</span></a></li>
@@ -76,7 +76,7 @@
                     <a href="" class="dropdown-toggle" data-toggle="dropdown">
                         <!--<img src="<?php //echo URL::to("/assets/images/people/35/2.jpg");?>" class="img-circle"
                              width="30" />Administrator-->
-                        <?php echo $u->username;?>
+                        <?php echo $u->firstname." ".$u->lastname;?>
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu pull-right">

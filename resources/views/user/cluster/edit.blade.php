@@ -15,13 +15,25 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ชื่อผู้ใช้</label>
                         <div class="col-sm-10">
-                            <input type="text" name="username" class="form-control" placeholder="username" value="<?php echo $item->username;?>">
+                            <input type="text" name="username" class="form-control" placeholder="ชื่อผู้ใช้" value="<?php echo $item->username;?>">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ชื่อ</label>
+                        <div class="col-sm-10">
+                            <input type="text" name="firstname" class="form-control" placeholder="ชื่อ" value="<?php echo $item->firstname;?>" required="">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">เปลี่ยนรหัสผ่าน</label>
                         <div class="col-sm-10">
-                            <input type="text" name="password" class="form-control" placeholder="new password">
+                            <input type="password" name="password" id="password-input" class="form-control" placeholder="new password">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ยืนยันเปลี่ยนรหัสผ่าน</label>
+                        <div class="col-sm-10">
+                            <input type="password" id="password_repeat-input" class="form-control" placeholder="repeat new password">
                         </div>
                     </div>
                     <div class="form-group">
@@ -65,10 +77,29 @@
 
     <script>
         $(function(){
+            var password_match = true;
+
+            $('#password-input, #password_repeat-input').on('input', function(event){
+                var pass = $('#password-input');
+                var pass_repeat = $('#password_repeat-input');
+
+                if(pass.val() != pass_repeat.val()){
+                    password_match = false;
+                    pass_repeat.css({color: 'red'});
+                }
+                else {
+                    password_match = true;
+                    pass_repeat.css({color: ''});
+                }
+            });
+
             // form submit
             $('#addvideo-form').submit(function(e){
                 e.preventDefault();
                 var fd = new FormData(this);
+
+                // if not repeat password return function
+                if(!password_match) return;
 
                 var inputs = $(":input", this);
                 inputs.prop("disabled", true);

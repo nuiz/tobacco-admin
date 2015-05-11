@@ -3,14 +3,14 @@
 @section('content')
     <?php $level = ["user", "super admin", "admin", "cluster", "writer"];?>
     <div class="innerLR spacing-x2">
-        <h3 class="">Cluster</h3>
+        <h3 class="">ผู้ใช้งานกลุ่มภาระกิจ</h3>
 
         <!-- Widget ---- -->
 
         <div class="widget">
             <!-- Widget heading -->
             <div class="widget-head">
-                <h4 class="heading"><a href="<?php echo URL::to('usercluster/add');?>">เพิ่ม cluster</a></h4>
+                <h4 class="heading"><a href="<?php echo URL::to('usercluster/add');?>">เพิ่ม</a></h4>
             </div>
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
@@ -21,6 +21,7 @@
                     <tr>
                         <th class="center">วันที่เพิ่ม</th>
                         <th>บัญชีผู้ใช้</th>
+                        <th>ชื่อ</th>
                         <th></th>
                     </tr>
                     </thead>
@@ -31,6 +32,7 @@
                     <tr>
                         <th class="center"><?php $dtString = date("d/m/Y", strtotime($item->created_at)); echo $dtString;?></th>
                         <th><?php echo $item->username;?></th>
+                        <th><?php echo $item->firstname;?></th>
                         <th>
                             <a href="<?php echo URL::to("usercluster/edit?id=".$item->account_id);?>">แก้ไข</a> /
                             <a class="delete-btn" href="<?php echo URL::to("usercluster/delete?id=".$item->account_id);?>">ลบ</a>

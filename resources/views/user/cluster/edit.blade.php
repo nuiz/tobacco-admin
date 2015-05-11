@@ -15,7 +15,8 @@
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ชื่อผู้ใช้</label>
                         <div class="col-sm-10">
-                            <input type="text" name="username" class="form-control" placeholder="ชื่อผู้ใช้" value="<?php echo $item->username;?>">
+                            <input type="text" name="username" id="username-input" class="form-control" placeholder="ชื่อผู้ใช้" value="<?php echo $item->username;?>">
+                            <p class="help-block">บัญชีผู้ใช้ต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลข และมีความยาว 4 ถึง 32 ตัวอักษร</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -28,6 +29,7 @@
                         <label class="col-sm-2 control-label">เปลี่ยนรหัสผ่าน</label>
                         <div class="col-sm-10">
                             <input type="password" name="password" id="password-input" class="form-control" placeholder="new password">
+                            <p class="help-block">รหัสผ่านต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลข และมีความยาว 4 ถึง 32 ตัวอักษร</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -77,19 +79,44 @@
 
     <script>
         $(function(){
+            var username_valid = true;
+            var password_valid = true;
             var password_match = true;
+
+            var $usernameInput = $('#username-input');
+
+            $usernameInput.on('input', function(event){
+                username_valid = /^[A-Za-z0-9_]{4,32}$/.test($usernameInput.val());
+
+                if(username_valid) {
+                    $usernameInput.closest('.form-group').removeClass('has-error');
+                }
+                else {
+                    $usernameInput.closest('.form-group').addClass('has-error');
+                }
+            });
 
             $('#password-input, #password_repeat-input').on('input', function(event){
                 var pass = $('#password-input');
                 var pass_repeat = $('#password_repeat-input');
 
-                if(pass.val() != pass_repeat.val()){
-                    password_match = false;
-                    pass_repeat.css({color: 'red'});
+                password_valid = /^[A-Za-z0-9_]{4,32}$/.test(pass.val());
+                password_match = pass.val() == pass_repeat.val();
+
+                // password valid
+                if(password_valid){
+                    pass.closest('.form-group').removeClass('has-error');
                 }
                 else {
-                    password_match = true;
-                    pass_repeat.css({color: ''});
+                    pass.closest('.form-group').addClass('has-error');
+                }
+
+                //password match
+                if(password_match){
+                    pass_repeat.closest('.form-group').removeClass('has-error');
+                }
+                else {
+                    pass_repeat.closest('.form-group').addClass('has-error');
                 }
             });
 
@@ -99,7 +126,7 @@
                 var fd = new FormData(this);
 
                 // if not repeat password return function
-                if(!password_match) return;
+                if(!password_match || !username_valid) return;
 
                 var inputs = $(":input", this);
                 inputs.prop("disabled", true);
@@ -147,7 +174,7 @@
                         }
                         else {
                             var message;
-                            if(data.error.code == 1){
+                            if(data.error.message == "duplicate username"){
                                 message = "username ซ้ำ";
                             }
                             else {

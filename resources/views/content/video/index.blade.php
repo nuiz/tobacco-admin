@@ -94,6 +94,7 @@
         });
 
         var el = document.getElementById('sortable-items');
+
         var sortable = Sortable.create(el, {
             handle: ".drag-handle",
             animation: 200,

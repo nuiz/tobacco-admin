@@ -37,11 +37,26 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">ไฟล์ Video(mp4)</label>
+                        <label class="col-sm-2 control-label">เพิ่ม Video</label>
 
                         <div class="col-sm-10">
                             <input type="file" id="video-input" class="form-control" multiple required="" accept="video/mp4">
-                            <div id="video-thumb-wrapper"></div>
+                            <p class="help-block">อนุญาติให้เพิ่มได้เฉพาะไฟล์ mp4</p>
+                            <div>
+                                <table class="table table-bordered table-primary">
+                                    <thead>
+                                    <tr>
+                                        <th class="col-md-1"></th>
+                                        <th class="col-md-2">ชื่อ video</th>
+                                        <th class="col-md-8">เลือกภาพหน้าปก video</th>
+                                        <th class="col-md-1"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="video-thumb-wrapper">
+
+                                    </tbody>
+                                </table>
+                            </div>
                             <div id="video-list-wrapper" class="hidden"></div>
                         </div>
                     </div>
@@ -72,7 +87,7 @@
         }
 
         .thumb-list-wrap img.selected {
-            box-shadow: 0 0 0px 3px rgba(255, 126, 0, 0.5);
+            box-shadow: 0 0 0px 3px rgba(210, 120, 0, 1);
         }
     </style>
 
@@ -148,14 +163,22 @@
             var blobVideos = [];
             var blobThumbs = [];
 
+            var videos = [];
+            function addVideo(){
+
+            };
+
             $input.change(function(e){
                 var files = $input.get(0).files;
-                $videoThumbWrapper.empty();
-                $videoListWrapper.empty();
                 $(files).each(function(index, file){
                     var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
-                    var $wrap = $('<div><strong>video name</strong><br /> <input name="videos_name[]" value="'+file.name+'"></div>');
-                    $wrap.append($wrapThumb);
+                    var $wrap = $('<tr>' +
+                    '<td class="center"><i class="glyphicon glyphicon-align-justify drag-handle"></i></td>' +
+                    '<td class=""><input name="videos_name[]" class="form-control" value="'+file.name+'"></td>' +
+                    '<td class="thumbnail-list"></td>' +
+                    '<td class=""></td>' +
+                    '</tr>');
+                    $wrap.find('.thumbnail-list').append($wrapThumb);
                     $videoThumbWrapper.append($wrap);
 
                     var fileURL = URL.createObjectURL(file);
@@ -171,7 +194,7 @@
 
                     // config max thumbnail
                     var iThumb = 0;
-                    var max = 8;
+                    var max = 4;
 
 
                     function setThumb(iThumb, duration){
@@ -209,6 +232,22 @@
                         setThumb(iThumb, this.duration);
                     });
                     $video.attr('src', fileURL);
+                });
+
+                // sortable
+                var elSortable = document.getElementById('video-thumb-wrapper');
+                var sortable = Sortable.create(elSortable, {
+                    handle: ".drag-handle",
+                    animation: 200,
+                    onUpdate: function (/**Event*/ evt) {
+                        console.log(evt);
+                        var rows = $('#video-thumb-wrapper tr');
+                        var id = [];
+                        rows.each(function(index, el){
+                            id.push($(el).attr("item-id"));
+                        });
+
+                    }
                 });
             });
 
@@ -397,4 +436,6 @@
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/custom/js/notyfy.init.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>
+
+    <script src="<?php echo URL::to("/assets/Sortable/Sortable.min.js");?>"></script>
 @endsection

@@ -40,10 +40,10 @@
                         <label class="col-sm-2 control-label">เพิ่ม Video</label>
 
                         <div class="col-sm-10">
-                            <input type="file" id="video-input" class="form-control" multiple required="" accept="video/mp4">
+                            <input type="file" id="video-input" class="form-control" multiple accept="video/mp4">
                             <p class="help-block">อนุญาติให้เพิ่มได้เฉพาะไฟล์ mp4</p>
                             <div>
-                                <table class="table table-bordered table-primary">
+                                <table class="table table-bordered table-primary table-videos" style="display: none;">
                                     <thead>
                                     <tr>
                                         <th class="col-md-1"></th>
@@ -160,78 +160,100 @@
 
             var URL = window.URL || window.webkitURL;
 
-            var blobVideos = [];
-            var blobThumbs = [];
-
             var videos = [];
-            function addVideo(){
 
-            };
+            function addVideo(file){
+                var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
+                var $wrap = $('<tr>' +
+                '<td class="center"><i class="glyphicon glyphicon-align-justify drag-handle"></i></td>' +
+                '<td class=""><input name="videos_name[]" class="form-control video-name"></td>' +
+                '<td class="thumbnail-list"></td>' +
+                '<td class=""><a class="delete-btn" href="#">ลบ</a></td>' +
+                '</tr>');
+                $wrap.find('.thumbnail-list').append($wrapThumb);
+                $videoThumbWrapper.append($wrap);
+
+                var $inputVideoName = $wrap.find('.video-name');
+
+                var videoObj = {};
+                $wrap.data('video', videoObj);
+
+                videoObj.file = file;
+                videoObj.name = file.name;
+                $inputVideoName.val(videoObj.name);
+
+                var fileURL = URL.createObjectURL(file);
+                var $video = $('<video></video>');
+
+                $inputVideoName.keyup(function(e){
+                    videoObj.name = $inputVideoName.val();
+                });
+
+                $videoListWrapper.append($video);
+
+                // config max thumbnail
+                var iThumb = 0;
+                var max = 4;
+
+                function setThumb(iThumb, duration){
+                    var time = Math.floor((iThumb/max) * duration) + 1;
+                    $video.get(0).currentTime = time;
+                }
+
+                $video.bind('loadedmetadata', function(e){
+                    setThumb(iThumb, this.duration);
+                });
+
+                $video.bind('seeked', function(e){
+                    var canvas = capture(this, 1);
+                    var data = canvas.toDataURL("image/jpeg");
+                    var $img = $('<img src="'+data+'" style="height: 90px;">');
+                    $img.attr('src', data);
+                    $wrapThumb.append($img);
+
+                    if(iThumb==0){
+                        $('img', $wrapThumb).removeClass('selected');
+                        $img.addClass('selected');
+                        videoObj.blobThumb = dataURItoBlob(data);
+                    }
+
+                    $img.click(function(){
+                        $('img', $wrapThumb).removeClass('selected');
+                        $img.addClass('selected');
+                        videoObj.blobThumb = dataURItoBlob(data);
+                    });
+
+                    iThumb++;
+                    if(iThumb >= max)
+                        return;
+
+                    setThumb(iThumb, this.duration);
+                });
+                $video.attr('src', fileURL);
+
+                // delete btn
+                $deleteBtn = $wrap.find('.delete-btn');
+                $deleteBtn.click(function(e){
+                    e.preventDefault();
+
+                    $wrap.remove();
+                    $video.remove();
+
+                    var index = videos.indexOf(videoObj);
+                    if (index > -1) {
+                        videos.splice(index, 1);
+                    }
+                });
+
+                videos.push(videoObj);
+            }
 
             $input.change(function(e){
                 var files = $input.get(0).files;
                 $(files).each(function(index, file){
-                    var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
-                    var $wrap = $('<tr>' +
-                    '<td class="center"><i class="glyphicon glyphicon-align-justify drag-handle"></i></td>' +
-                    '<td class=""><input name="videos_name[]" class="form-control" value="'+file.name+'"></td>' +
-                    '<td class="thumbnail-list"></td>' +
-                    '<td class=""></td>' +
-                    '</tr>');
-                    $wrap.find('.thumbnail-list').append($wrapThumb);
-                    $videoThumbWrapper.append($wrap);
-
-                    var fileURL = URL.createObjectURL(file);
-                    blobVideos[index] = file;
-                    var $video = $('<video></video>');
-                    $video.data("seq", index);
-
-//                    $img.data("seq", index);
-
-                    $videoListWrapper.append($video);
-//                    $wrapThumb.append($img);
-
-
-                    // config max thumbnail
-                    var iThumb = 0;
-                    var max = 4;
-
-
-                    function setThumb(iThumb, duration){
-                        var time = Math.floor((iThumb/max) * duration) + 1;
-                        $video.get(0).currentTime = time;
-                    }
-
-                    $video.bind('loadedmetadata', function(e){
-                        setThumb(iThumb, this.duration);
-                    });
-
-                    $video.bind('seeked', function(e){
-                        var canvas = capture(this, 1);
-                        var data = canvas.toDataURL("image/jpeg");
-                        var $img = $('<img src="'+data+'" style="height: 90px;">');
-                        $img.attr('src', data);
-                        $wrapThumb.append($img);
-
-                        if(iThumb==0){
-                            $('img', $wrapThumb).removeClass('selected');
-                            $img.addClass('selected');
-                            blobThumbs[index] = dataURItoBlob(data);
-                        }
-
-                        $img.click(function(){
-                            $('img', $wrapThumb).removeClass('selected');
-                            $img.addClass('selected');
-                            blobThumbs[index] = dataURItoBlob(data);
-                        });
-
-                        iThumb++;
-                        if(iThumb >= max)
-                            return;
-
-                        setThumb(iThumb, this.duration);
-                    });
-                    $video.attr('src', fileURL);
+                    $('.table-videos').show();
+                    addVideo(file);
+                    $input.val("");
                 });
 
                 // sortable
@@ -240,13 +262,12 @@
                     handle: ".drag-handle",
                     animation: 200,
                     onUpdate: function (/**Event*/ evt) {
-                        console.log(evt);
                         var rows = $('#video-thumb-wrapper tr');
-                        var id = [];
+                        videos = [];
                         rows.each(function(index, el){
-                            id.push($(el).attr("item-id"));
+                            var $el = $(el);
+                            videos.push($el.data('video'));
                         });
-
                     }
                 });
             });
@@ -255,18 +276,11 @@
             $('#addvideo-form').submit(function(e){
                 e.preventDefault();
                 var fd = new FormData(this);
-//                var data = $img.attr('src');
-//                var blob = dataURItoBlob(data);
-//                fd.append("video_thumb", blob, 'thumb.jpeg');
 
-                $(blobVideos).each(function(index, blob){
-                    fd.append("videos["+index+"]", blob, index +".mp4");
+                $(videos).each(function(index, videoObj){
+                    fd.append("videos["+index+"]", videoObj.file, index +".mp4");
+                    fd.append("videos_thumb["+index+"]", videoObj.blobThumb, index +".jpeg");
                 });
-                $(blobThumbs).each(function(index, blob){
-                    fd.append("videos_thumb["+index+"]", blob, index +".jpeg");
-                });
-//                fd.append("thumbs", blobThumbs);
-//                fd.append("videos", blobVideos);
 
                 var inputs = $(":input", this);
                 inputs.prop("disabled", true);

@@ -15,28 +15,39 @@
             <!-- // Widget heading END -->
             <div class="widget-body innerAll inner-2x">
 
-                <div style="float: right; width: 500px; margin-top: -14px;">
-                    <form method="get" class="form-inline form-filter" style="line-height: 37px;">
+                <div>
+                    <form method="get" class="form-filter" style="line-height: 37px;">
                         <div class="row">
-                            <div class="col-md-4 text-right">Category</div>
-                            <div class="col-md-8">
-                                <select name="guru_cat_id" class="select2" placeholder="Category">
-                                    <option value="">-- Category --</option>
+                            <div class="col-md-3">
+                                <label>ชื่อผู้เชี่ยวชาญ</label>
+                                <input type="text" class="form-control" name="firstname" value="<?php if(isset($_GET['firstname'])) echo $_GET['firstname'];?>">
+                            </div>
+                            <div class="col-md-3">
+                                <label>นามสกุลผู้เชี่ยวชาญ</label>
+                                <input type="text" class="form-control" name="lastname" value="<?php if(isset($_GET['lastname'])) echo $_GET['lastname'];?>">
+                            </div>
+                            <div class="col-md-6">
+                                <label>ประเภทผู้เชี่ยวชาญ</label>
+                                <select name="guru_cat_id" class="form-control" placeholder="Category">
+                                    <option value="">All</option>
                                     <?php
                                     $catId = isset($_GET['guru_cat_id'])? $_GET['guru_cat_id']: false;
                                     foreach($category as $cat){?>
                                     <option value="<?php echo $cat->guru_cat_id;?>"
-                                        <?php echo $cat->guru_cat_id==$catId? "selected": "";?>><?php echo $cat->guru_cat_name;?></option>
+                                    <?php echo $cat->guru_cat_id==$catId? "selected": "";?>><?php echo $cat->guru_cat_name;?></option>
                                     <?php }?>
                                 </select>
+                            </div>
+                        </div>
+                        <div class="row text-left" style="margin-bottom: 20px;">
+                            <div class="col-md-12">
+                                <button type="submit" class="btn btn-warning">Search</button>
                             </div>
                         </div>
                     </form>
                     <script>
                         $(function(){
-                            $('.select2').change(function(){
-                                $('.form-filter').submit();
-                            });
+                            $('.select2').selectize();
                         });
                     </script>
                 </div>

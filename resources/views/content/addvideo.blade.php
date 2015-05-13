@@ -64,7 +64,15 @@
                         <label class="col-sm-2 control-label">แนบไฟล์</label>
 
                         <div class="col-sm-10">
-                            <input type="file"  class="form-control" name="attach_files[]" multiple>
+                            <input type="file"  class="form-control" id="add-attach"
+                                   accept="application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/msword,
+                                   application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,
+                                   text/plain,
+                                   application/pdf, .pdf,
+                                   application/vnd.openxmlformats-officedocument.presentationml.presentation,
+                                   application/vnd.openxmlformats-officedocument.presentationml.slideshow" multiple>
+                            <div id="attach-file-list">
+                            </div>
                         </div>
                     </div>
 
@@ -88,6 +96,67 @@
 
         .thumb-list-wrap img.selected {
             box-shadow: 0 0 0px 3px rgba(210, 120, 0, 1);
+        }
+
+        .attach-file {
+            display: inline-block;
+
+            padding: 3px 18px 3px 5px;
+            margin: 3px 0 3px 5px;
+            position: relative;
+            line-height: 13px;
+            color: #333;
+            cursor: default;
+            border: 1px solid #aaaaaa;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+            -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+            -moz-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+            box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0,0,0,0.05);
+            -webkit-background-clip: padding-box;
+            -moz-background-clip: padding;
+            background-clip: padding-box;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            background-color: #e4e4e4;
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#eeeeee', endColorstr='#f4f4f4', GradientType=0 );
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
+            background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+            background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+            background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+            background-image: -ms-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+            background-image: linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+
+            margin: 5px 0 5px 5px;
+            border-color: #efefef;
+            background: #eaeaea;
+            -webkit-box-shadow: none;
+            -moz-box-shadow: none;
+            box-shadow: none;
+            -webkit-border-radius: 0 0 0 0;
+            -moz-border-radius: 0 0 0 0;
+            border-radius: 0 0 0 0;
+            line-height: 14px;
+        }
+
+        .attach-file-delete-btn {
+            display: block;
+            width: 12px;
+            height: 13px;
+            position: absolute;
+            right: 3px;
+            top: 4px;
+            outline: none;
+            padding: 0;
+        }
+
+        .attach-file-delete-btn i:before {
+            font-size: 12px;
         }
     </style>
 
@@ -272,14 +341,72 @@
                 });
             });
 
+            // attach file
+            var attachs = [];
+            (function(attachs){
+                var elTemplate = '<div class="attach-file">' +
+                        '<a href="#" class="glyphicons remove_2 attach-file-delete-btn"><i></i></a>'+
+                        '<div class="attach-file-name"></div>'+
+                        '</div>';
+
+                var $list = $('#attach-file-list');
+                var $addBtn = $('#add-attach');
+
+                function addFile(file){
+                    var $el = $(elTemplate);
+                    $('.attach-file-name', $el).text(file.name);
+
+                    var fileObj = {
+                        file: file,
+                        $el: $el
+                    };
+                    attachs.push(fileObj);
+
+                    $list.append($el);
+                    $('.attach-file-delete-btn', $el).click(function(e){
+                        e.preventDefault();
+                        $el.remove();
+
+                        var index = attachs.indexOf(fileObj);
+                        if (index > -1) {
+                            attachs.splice(index, 1);
+                        }
+                    });
+                }
+
+                $addBtn.change(function(e){
+                    e.preventDefault();
+                    var files = $addBtn.get(0).files;
+
+                    $(files).each(function(index, file){
+                        addFile(file);
+                        $addBtn.val("");
+                    });
+                });
+            })(attachs);
+
             // form submit
             $('#addvideo-form').submit(function(e){
                 e.preventDefault();
                 var fd = new FormData(this);
 
+                if(videos.length == 0){
+                    notyfy({
+                        text: 'กรุณาเลือก video ด้วย',
+                        type: 'error',
+                        dismissQueue: true,
+                        timeout: 3000
+                    });
+                    return;
+                }
+
                 $(videos).each(function(index, videoObj){
                     fd.append("videos["+index+"]", videoObj.file, index +".mp4");
                     fd.append("videos_thumb["+index+"]", videoObj.blobThumb, index +".jpeg");
+                });
+
+                $(attachs).each(function(index, fileObj){
+                    fd.append("attach_files["+index+"]", fileObj.file, fileObj.file.name);
                 });
 
                 var inputs = $(":input", this);

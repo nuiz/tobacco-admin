@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="innerLR spacing-x2">
-        <h3 class="">เพิ่ม Cluster</h3>
+        <h3 class="">เพิ่ม Writer</h3>
 
         <!-- Widget ---- -->
 

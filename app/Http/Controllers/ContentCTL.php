@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Api;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Session;
 
 class ContentCTL extends Controller {
     public function __construct()
@@ -153,7 +154,8 @@ class ContentCTL extends Controller {
 
         $input["content_type"] = "video";
 
-        $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=".$u->auth_token, [], $input);
         return $res->body;
     }
 
@@ -181,7 +183,8 @@ class ContentCTL extends Controller {
             }
         }
 
-        $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::post(Api::BASE_URL."/content?auth_token=".$u->auth_token, [], $input);
         return $res->body;
     }
 

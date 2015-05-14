@@ -130,9 +130,10 @@
     <link rel="stylesheet" href="<?php echo URL::to("assets/selectize.js/dist/css/selectize.bootstrap3.css");?>">
 
     <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/bootstrap-datepicker.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-datepicker/assets/lib/js/locales/bootstrap-datepicker.th.js");?>"></script>
 
     <link rel="stylesheet" href="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css");?>">
-    <script src="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js");?>"></script>
+    <script src="<?php echo URL::to("assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js");?>"></script>
 
     <script>
         if (typeof $.fn.bdatepicker == 'undefined')
@@ -140,10 +141,12 @@
 
         $(function(){
             $("#datepicker1").bdatepicker({
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd',
+                language: 'th'
             });
             $("#datepicker2").bdatepicker({
-                format: 'yyyy-mm-dd'
+                format: 'yyyy-mm-dd',
+                language: 'th'
             });
         });
 

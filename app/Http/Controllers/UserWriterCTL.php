@@ -39,8 +39,10 @@ class UserWriterCTL extends Controller {
     }
 
     public function getAdd(){
+        $resCluster = Api::get("/account/cluster");
         $res = Api::get("/account/user");
-        return view("user/writer/add", ["users"=> $res->data]);
+        $u = Session::get("userlogin");
+        return view("user/writer/add", ["users"=> $res->data, 'clusters'=> $resCluster->data, 'u'=> $u]);
     }
 
     public function postAdd(){

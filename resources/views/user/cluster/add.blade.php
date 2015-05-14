@@ -125,7 +125,36 @@
                 e.preventDefault();
 
                 // if not repeat password return function
-                if(!password_match || !username_valid) return;
+
+                if(!username_valid) {
+                    notyfy({
+                        text: "รูปแบบบัญชีผู้ใช้ผิด กรุณากรอกบัญชีผู้ใช้ใหม่",
+                        type: 'error',
+                        dismissQueue: true,
+                        timeout: 3000
+                    });
+                    return;
+                }
+
+                if(!password_valid) {
+                    notyfy({
+                        text: "รูปแบบรหัสผ่านผิด กรุณากรอกรหัสผ่านใหม่",
+                        type: 'error',
+                        dismissQueue: true,
+                        timeout: 3000
+                    });
+                    return;
+                }
+
+                if(!password_match) {
+                    notyfy({
+                        text: "รหัสผ่านไม่ตรงกัน กรุณายืนยันรหัสผ่านใหม่",
+                        type: 'error',
+                        dismissQueue: true,
+                        timeout: 3000
+                    });
+                    return;
+                }
 
                 var fd = new FormData(this);
 

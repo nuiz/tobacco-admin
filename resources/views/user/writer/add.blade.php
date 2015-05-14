@@ -41,6 +41,20 @@
                             });
                         </script>
                     </div>
+                    <?php if(in_array($u->level_id, [1,2])){?>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">กลุ่มภารกิจ</label>
+                        <div class="col-sm-10">
+                            <select name="cluster_id">
+                                <?php
+                                foreach($clusters as $item){
+                                    echo '<option value="'.$item->cluster_id.'">'.$item->firstname.' '.$item->lastname.'</option>';
+                                }
+                                ?>
+                            </select>
+                        </div>
+                    </div>
+                    <?php }?>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="submit" class="btn btn-primary">Submit</button>

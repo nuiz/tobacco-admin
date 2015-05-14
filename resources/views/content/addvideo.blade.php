@@ -158,6 +158,14 @@
         .attach-file-delete-btn i:before {
             font-size: 12px;
         }
+
+
+        .drag-handle {
+            cursor: pointer;
+        }
+        .drag-handle.glyphicons i:before {
+            color: #3695d5;
+        }
     </style>
 
     <script src="<?php echo URL::to("assets/components/common/forms/elements/bootstrap-switch/assets/lib/js/bootstrap-switch.js?v=v1.0.3-rc2");?>"></script>
@@ -234,7 +242,7 @@
             function addVideo(file){
                 var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
                 var $wrap = $('<tr>' +
-                '<td class="center"><i class="glyphicon glyphicon-align-justify drag-handle"></i></td>' +
+                '<td class="text-center"><div class="glyphicons move drag-handle"><i></i></div></td>' +
                 '<td class=""><input name="videos_name[]" class="form-control video-name"></td>' +
                 '<td class="thumbnail-list"></td>' +
                 '<td class=""><a class="delete-btn" href="#">ลบ</a></td>' +

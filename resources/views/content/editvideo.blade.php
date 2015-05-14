@@ -45,6 +45,74 @@
                 <!-- // Table END -->
             </div>
         </div>
+
+        <div class="widget">
+            <div class="widget-head">
+                <h4 class="heading">
+                    Upload new video
+                </h4>
+            </div>
+            <form class="form-horizontal" id="addvideo-form" role="form" method="post" enctype="multipart/form-data">
+                <div>
+                    <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
+                </div>
+                <input type="hidden" name="content_id" value="<?php echo $content->content_id;?>">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">ไฟล์ Video(mp4)</label>
+
+                    <div class="col-sm-10">
+                        <input type="file" id="video-input" class="form-control" multiple required="" accept="video/mp4">
+                        <div id="video-thumb-wrapper"></div>
+                        <div id="video-list-wrapper" class="hidden"></div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="widget">
+            <!-- Widget heading -->
+            <div class="widget-head">
+                <h4 class="heading">
+                    จัดเรียง Video
+                </h4>
+            </div>
+            <!-- // Widget heading END -->
+            <div class="widget-body innerAll inner-2x">
+                <!-- Table -->
+                <table class="table table-bordered table-primary">
+                    <!-- Table heading -->
+                    <thead>
+                    <tr>
+                        <th class="center"></th>
+                        <th>name</th>
+                        <th>thumb</th>
+                        <th>video</th>
+                        <th></th>
+                    </tr>
+                    </thead>
+                    <!-- // Table heading END -->
+                    <!-- Table body -->
+                    <tbody id="sortable-items">
+                    <?php foreach($content->videos as $key=> $item){?>
+                    <tr item-id="<?php echo $item->id;?>">
+                        <td class="center"><div class="glyphicons sorting drag-handle"><i></i></div><?php //echo $item->id;?></td>
+                        <td><?php echo $item->video_name;?></td>
+                        <td><img src="<?php echo $item->video_thumb_url;?>" width="64"></td>
+                        <td><a class="prettyP" href="<?php echo $item->video_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $content->content_description;?>">แสดงผล</a></td>
+                        <td><a class="delete-btn" href="<?php echo URL::to("content/video/delete?id={$item->id}&content_id={$content->content_id}");?>">ลบ</a></td>
+                    </tr>
+                    <?php }?>
+                    </tbody>
+                    <!-- // Table body END -->
+                </table>
+                <!-- // Table END -->
+            </div>
+        </div>
     </div>
 
     <style>

@@ -60,7 +60,7 @@
                     <tbody id="sortable-items">
                     <?php foreach($content->videos as $key=> $item){?>
                     <tr item-id="<?php echo $item->id;?>">
-                        <td class="center"><i class="glyphicon glyphicon-align-justify drag-handle"></i><?php //echo $item->id;?></td>
+                        <td class="center"><div class="glyphicons sorting drag-handle"><i></i></div><?php //echo $item->id;?></td>
                         <td><?php echo $item->video_name;?></td>
                         <td><img src="<?php echo $item->video_thumb_url;?>" width="64"></td>
                         <td><a class="prettyP" href="<?php echo $item->video_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $content->content_description;?>">แสดงผล</a></td>

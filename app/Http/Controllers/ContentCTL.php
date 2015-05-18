@@ -20,7 +20,9 @@ class ContentCTL extends Controller {
     }
 
     public function getIndex(){
-        $res = Api::get("/content?".http_build_query($_GET));
+        $u = Session::get("userlogin");
+        $params = array_merge($_GET, ["auth_token"=> $u->auth_token, "req_from_management"=> 1]);
+        $res = Api::get("/content?".http_build_query($params));
         $catRes = Api::get("/category/all");
         return view("content/index", ['items'=> $res->data, "category"=> $catRes->data]);
     }

@@ -308,7 +308,7 @@
                 return false;
             });
 
-            window.document.getElementById
+            //window.document.getElementById
         });
     </script>
 

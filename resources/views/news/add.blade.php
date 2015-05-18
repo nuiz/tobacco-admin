@@ -46,7 +46,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="hidden" id="image-buffer-wrapper"></div>
-                            <button type="submit" class="btn btn-primary">ตกลง</button> <a id="display-example-btn" class="btn btn-warning" href="">แสดงตัวอย่าง</a>
+                            <button type="submit" class="btn btn-primary">ตกลง</button> <a id="display-example-btn" class="btn btn-default" href="">แสดงตัวอย่าง</a>
                         </div>
                     </div>
                 </form>

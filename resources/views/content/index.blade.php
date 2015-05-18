@@ -102,7 +102,7 @@
                         <td><?php echo $item->category_name;?></td>
                         <td>
                             <?php if($item->content_type=="video"){?>
-                            <a href="<?php echo URL::to("content/video?content_id={$item->content_id}");?>">รายการ video</a>
+
                             <?php }else{?>
                                 <a class="prettyP" href="<?php echo $item->content_type=="video"? $item->videos[0]->video_url: $item->book_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $item->content_description;?>">แสดงผล</a>
                             <?php }?>

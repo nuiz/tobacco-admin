@@ -78,6 +78,15 @@ class ContentVideoCTL extends Controller {
         return json_encode($res->body);
     }
 
+    public function postApplyname(){
+        $req = Request::createFromGlobals();
+
+        $input = $req->input();
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::post(Api::BASE_URL."/content/video/applyname?auth_token=".$u->auth_token, [], $input);
+        return json_encode($res->body);
+    }
+
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");

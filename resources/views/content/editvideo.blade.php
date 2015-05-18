@@ -49,10 +49,10 @@
         <div class="widget">
             <div class="widget-head">
                 <h4 class="heading">
-                    Upload new video
+                    เพิ่ม video
                 </h4>
             </div>
-            <form class="form-horizontal" id="addvideo-form" role="form" method="post" enctype="multipart/form-data">
+            <form class="form-horizontal" id="upload-video-form" role="form" method="post" enctype="multipart/form-data">
                 <div>
                     <progress id="upload-progress2" class="hidden" style="width: 100%" value="0" max="100"></progress>
                 </div>
@@ -61,8 +61,22 @@
                     <label class="col-sm-2 control-label">ไฟล์ Video(mp4)</label>
 
                     <div class="col-sm-10">
-                        <input type="file" id="video-input" class="form-control" multiple required="" accept="video/mp4">
-                        <div id="video-thumb-wrapper"></div>
+                        <input type="file" id="video-input" class="form-control" multiple accept="video/mp4">
+                        <p class="help-block">อนุญาติให้เพิ่มได้เฉพาะไฟล์ mp4</p>
+                        <div>
+                            <table class="table table-bordered table-primary table-videos" style="display: none;">
+                                <thead>
+                                <tr>
+                                    <th class="col-md-2">ชื่อ video</th>
+                                    <th class="col-md-8">เลือกภาพหน้าปก video</th>
+                                    <th class="col-md-1"></th>
+                                </tr>
+                                </thead>
+                                <tbody id="video-thumb-wrapper">
+
+                                </tbody>
+                            </table>
+                        </div>
                         <div id="video-list-wrapper" class="hidden"></div>
                     </div>
                 </div>
@@ -78,7 +92,7 @@
             <!-- Widget heading -->
             <div class="widget-head">
                 <h4 class="heading">
-                    จัดเรียง Video
+                    รายการ video
                 </h4>
             </div>
             <!-- // Widget heading END -->
@@ -100,8 +114,8 @@
                     <tbody id="sortable-items">
                     <?php foreach($content->videos as $key=> $item){?>
                     <tr item-id="<?php echo $item->id;?>">
-                        <td class="center"><div class="glyphicons sorting drag-handle"><i></i></div><?php //echo $item->id;?></td>
-                        <td><?php echo $item->video_name;?></td>
+                        <td class="center"><div class="glyphicons move drag-handle"><i></i></div><?php //echo $item->id;?></td>
+                        <td><input type="text" class="form-control video-name-input" style="color: gray;" value="<?php echo $item->video_name;?>" /></td>
                         <td><img src="<?php echo $item->video_thumb_url;?>" width="64"></td>
                         <td><a class="prettyP" href="<?php echo $item->video_url;?>?iframe=true&width=100%&height=100%" rel="prettyPhoto[iframes]" title="<?php echo $content->content_description;?>">แสดงผล</a></td>
                         <td><a class="delete-btn" href="<?php echo URL::to("content/video/delete?id={$item->id}&content_id={$content->content_id}");?>">ลบ</a></td>
@@ -111,6 +125,9 @@
                     <!-- // Table body END -->
                 </table>
                 <!-- // Table END -->
+                <div class="text-center">
+                    <button class="btn btn-primary" id="apply-video-name-btn">บันทึกการแก้ไขชื่อ video</button>
+                </div>
             </div>
         </div>
     </div>
@@ -124,6 +141,13 @@
 
         .thumb-list-wrap img.selected {
             box-shadow: 0 0 0px 3px rgba(255, 126, 0, 0.5);
+        }
+
+        .drag-handle {
+            cursor: pointer;
+        }
+        .drag-handle.glyphicons i:before {
+            color: #3695d5;
         }
     </style>
 
@@ -196,89 +220,194 @@
 
             var URL = window.URL || window.webkitURL;
 
-            var blobVideos = [];
-            var blobThumbs = [];
+            var videos = [];
+
+            function addVideo(file){
+                var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
+                var $wrap = $('<tr>' +
+                //'<td class="text-center"><div class="glyphicons move drag-handle"><i></i></div></td>' +
+                '<td class=""><input name="videos_name[]" class="form-control video-name"></td>' +
+                '<td class="thumbnail-list"></td>' +
+                '<td class=""><a class="delete-btn" href="#">ลบ</a></td>' +
+                '</tr>');
+                $wrap.find('.thumbnail-list').append($wrapThumb);
+                $videoThumbWrapper.append($wrap);
+
+                var $inputVideoName = $wrap.find('.video-name');
+
+                var videoObj = {};
+                $wrap.data('video', videoObj);
+
+                videoObj.file = file;
+                videoObj.name = file.name;
+                $inputVideoName.val(videoObj.name);
+
+                var fileURL = URL.createObjectURL(file);
+                var $video = $('<video></video>');
+
+                $inputVideoName.keyup(function(e){
+                    videoObj.name = $inputVideoName.val();
+                });
+
+                $videoListWrapper.append($video);
+
+                // config max thumbnail
+                var iThumb = 0;
+                var max = 4;
+
+                function setThumb(iThumb, duration){
+                    var time = Math.floor((iThumb/max) * duration) + 1;
+                    $video.get(0).currentTime = time;
+                }
+
+                $video.bind('loadedmetadata', function(e){
+                    setThumb(iThumb, this.duration);
+                });
+
+                $video.bind('seeked', function(e){
+                    var canvas = capture(this, 1);
+                    var data = canvas.toDataURL("image/jpeg");
+                    var $img = $('<img src="'+data+'" style="height: 90px;">');
+                    $img.attr('src', data);
+                    $wrapThumb.append($img);
+
+                    if(iThumb==0){
+                        $('img', $wrapThumb).removeClass('selected');
+                        $img.addClass('selected');
+                        videoObj.blobThumb = dataURItoBlob(data);
+                    }
+
+                    $img.click(function(){
+                        $('img', $wrapThumb).removeClass('selected');
+                        $img.addClass('selected');
+                        videoObj.blobThumb = dataURItoBlob(data);
+                    });
+
+                    iThumb++;
+                    if(iThumb >= max)
+                        return;
+
+                    setThumb(iThumb, this.duration);
+                });
+                $video.attr('src', fileURL);
+
+                // delete btn
+                var $deleteBtn = $wrap.find('.delete-btn');
+                $deleteBtn.click(function(e){
+                    e.preventDefault();
+
+                    $wrap.remove();
+                    $video.remove();
+
+                    var index = videos.indexOf(videoObj);
+                    if (index > -1) {
+                        videos.splice(index, 1);
+                    }
+                });
+
+                videos.push(videoObj);
+            }
 
             $input.change(function(e){
                 var files = $input.get(0).files;
-                $videoThumbWrapper.empty();
-                $videoListWrapper.empty();
                 $(files).each(function(index, file){
-                    var $wrapThumb = $('<div class="thumb-list-wrap"></div>');
-                    var $wrap = $('<div class=""><h4>'+file.name+'</h4></div>');
-                    $wrap.append($wrapThumb);
-                    $videoThumbWrapper.append($wrap);
-
-                    var fileURL = URL.createObjectURL(file);
-                    blobVideos[index] = file;
-                    var $video = $('<video></video>');
-                    $video.data("seq", index);
-
-//                    $img.data("seq", index);
-
-                    $videoListWrapper.append($video);
-//                    $wrapThumb.append($img);
-
-
-                    // config max thumbnail
-                    var iThumb = 0;
-                    var max = 4;
-
-
-                    function setThumb(iThumb, duration){
-                        var time = Math.floor((iThumb/max) * duration) + 1;
-                        $video.get(0).currentTime = time;
-                    }
-
-                    $video.bind('loadedmetadata', function(e){
-                        setThumb(iThumb, this.duration);
-                    });
-
-                    $video.bind('seeked', function(e){
-                        var canvas = capture(this, 1);
-                        var data = canvas.toDataURL("image/jpeg");
-                        var $img = $('<img src="'+data+'" style="height: 90px;">');
-                        $img.attr('src', data);
-                        $wrapThumb.append($img);
-
-                        if(iThumb==0){
-                            $('img', $wrapThumb).removeClass('selected');
-                            $img.addClass('selected');
-                            blobThumbs[index] = dataURItoBlob(data);
-                        }
-
-                        $img.click(function(){
-                            $('img', $wrapThumb).removeClass('selected');
-                            $img.addClass('selected');
-                            blobThumbs[index] = dataURItoBlob(data);
-                        });
-
-                        iThumb++;
-                        if(iThumb >= max)
-                            return;
-
-                        setThumb(iThumb, this.duration);
-                    });
-                    $video.attr('src', fileURL);
+                    $('.table-videos').show();
+                    addVideo(file);
+                    $input.val("");
                 });
+            });
+
+            // form upload submit
+            $('#upload-video-form').submit(function(e){
+                e.preventDefault();
+
+                if(videos.length==0){
+                    return false;
+                }
+
+                var fd = new FormData(this);
+                $(videos).each(function(index, videoObj){
+                    fd.append("videos["+index+"]", videoObj.file, index +".mp4");
+                    fd.append("videos_thumb["+index+"]", videoObj.blobThumb, index +".jpeg");
+                });
+
+                var inputs = $(":input", this);
+                inputs.prop("disabled", true);
+
+                var $progress = $('#upload-progress2');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo URL::to("");?>/content/video?content_id=' + <?php echo $content->content_id;?>,
+                    data: fd,
+                    contentType: false,
+                    xhr: function()
+                    {
+                        $progress.removeClass("hidden");
+
+                        var xhr = new window.XMLHttpRequest();
+                        //Upload progress
+                        xhr.upload.addEventListener("progress", function(evt){
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = percentComplete * 100;
+                                $progress.val(percentComplete);
+                                //Do something with upload progress
+                            }
+                        }, false);
+                        //Download progress
+                        xhr.addEventListener("progress", function(evt){
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = percentComplete * 100;
+                                $progress.attr('valut', percentComplete);
+                                //Do something with download progress
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(data){
+                        if(data.error == undefined){
+                            notyfy({
+                                text: 'Success',
+                                type: 'success',
+                                dismissQueue: true
+                            });
+                            //setTimeout(function(){ window.location.replace('<?php echo URL::to("content");?>'); }, 1000);
+                            setTimeout(function(){ window.location.reload(); }, 1000);
+                        }
+                        else {
+                            notyfy({
+                                text: 'No success',
+                                type: 'error',
+                                dismissQueue: true,
+                                timeout: 3000
+                            });
+                            inputs.prop("disabled", false);
+                            $progress.addClass("hidden");
+                        }
+                    },
+                    error: function(){
+                        notyfy({
+                            text: 'No success',
+                            type: 'error',
+                            dismissQueue: true,
+                            timeout: 3000
+                        });
+                        inputs.prop("disabled", false);
+                        $progress.addClass("hidden");
+                    },
+                    dataType: 'json',
+                    processData: false
+                });
+
+                return false;
             });
 
             // form submit
             $('#addvideo-form').submit(function(e){
                 e.preventDefault();
                 var fd = new FormData(this);
-//                var data = $img.attr('src');
-//                var blob = dataURItoBlob(data);
-//                fd.append("video_thumb", blob, 'thumb.jpeg');
-
-                $(blobVideos).each(function(index, blob){
-                    fd.append("videos["+index+"]", blob, index +".mp4");
-                });
-                $(blobThumbs).each(function(index, blob){
-                    fd.append("videos_thumb["+index+"]", blob, index +".jpeg");
-                });
-//                fd.append("thumbs", blobThumbs);
-//                fd.append("videos", blobVideos);
 
                 var inputs = $(":input", this);
                 inputs.prop("disabled", true);
@@ -323,7 +452,7 @@
                                 dismissQueue: true
                             });
                             //setTimeout(function(){ window.location.replace('<?php echo URL::to("content");?>'); }, 1000);\
-                            //setTimeout(function(){ window.location.reload(); }, 1000);
+                            setTimeout(function(){ window.location.reload(); }, 1000);
                         }
                         else {
                             notyfy({
@@ -478,6 +607,102 @@
                     }
                 }
             }
+        });
+    </script>
+
+    <link rel="stylesheet" href="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css");?>">
+    <script src="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js");?>"></script>
+
+    <script src="<?php echo URL::to("/assets/Sortable/Sortable.min.js");?>"></script>
+
+    <script>
+        $("a[rel^='prettyPhoto']").prettyPhoto({
+            custom_markup: '<div id="map_canvas" style="width:260px; height:265px"></div>',
+            social_tools: false
+        });
+
+        $(function(){
+            $('.delete-btn').click(function(e){
+                e.preventDefault();
+                if(window.confirm("Are you shure?")){
+
+                    var $el = $(this);
+                    var href = $el.attr("href");
+                    var $tr = $el.closest("tr");
+
+                    $.get(href, function(data){
+                        if(typeof data.error == "undefined"){
+                            $tr.remove();
+                        }
+                        else {
+                            notyfy({
+                                text: 'No success',
+                                type: 'error',
+                                dismissQueue: true,
+                                timeout: 3000
+                            });
+                        }
+                    }, 'json');
+                }
+                return false;
+            });
+
+            var el = document.getElementById('sortable-items');
+            var sortable = Sortable.create(el, {
+                handle: ".drag-handle",
+                animation: 200,
+                onUpdate: function (/**Event*/ evt) {
+                    console.log(evt);
+                    var rows = $('#sortable-items tr');
+                    var id = [];
+                    rows.each(function(index, el){
+                        id.push($(el).attr("item-id"));
+                    });
+                    var send = {list_id: id, content_id: <?php echo $content->content_id;?>};
+                    $.post("<?php echo URL::to("/content/video/sort");?>", send, function(data){
+
+                        // bla bla bla
+
+                    }, "json");
+                }
+            });
+
+            $('#apply-video-name-btn').click(function(e){
+                e.preventDefault();
+                var $inputs = $(".video-name-input");
+
+                var items = [];
+                $inputs.each(function(index, el){
+                    var $el = $(el);
+                    var id = $el.closest('tr').attr('item-id');
+
+                    items.push({
+                        id: id,
+                        name: $el.val()
+                    });
+                });
+
+                $.post("<?php echo URL::to("/content/video/applyname");?>", {"videos": items}, function(data){
+                    if(typeof data.error == "undefined"){
+                        notyfy({
+                            text: 'บันทึกชื่อ video เรียบร้อย',
+                            type: 'success',
+                            dismissQueue: true,
+                            timeout: 3000
+                        });
+                    }
+                    else {
+                        notyfy({
+                            text: 'No success',
+                            type: 'error',
+                            dismissQueue: true,
+                            timeout: 3000
+                        });
+                    }
+                }, 'json');
+
+                return false;
+            });
         });
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>

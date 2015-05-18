@@ -388,6 +388,7 @@
 
         .example-cover {
             height: 300px;
+            background-color: white;
             background-size: cover;
         }
 

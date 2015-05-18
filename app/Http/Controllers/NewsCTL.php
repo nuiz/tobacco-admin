@@ -46,7 +46,8 @@ class NewsCTL extends Controller {
     public function getDelete(){
         $req = Request::createFromGlobals();
         $id = $req->input("id");
-        $res = \Unirest\Request::delete(Api::BASE_URL."/news/{$id}?auth_token=74a500a2eee1b8274dae468ddb4892fb");
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::delete(Api::BASE_URL."/news/{$id}?auth_token=".$u->auth_token);
         return redirect("news");
     }
 
@@ -77,9 +78,39 @@ class NewsCTL extends Controller {
         return $res->body;
     }
 
-    public function getEditbook(){
+    public function getEdit(){
         $req = Request::createFromGlobals();
         $news = Api::get("/news/".$req->input("id"));
         return view("news/edit", ["news"=> $news]);
     }
+
+    public function postEdit(){
+        $req = Request::createFromGlobals();
+
+        // user internal function add book
+        $item = $this->_edit($req);
+
+        if($req->ajax()){
+            return json_encode($item);
+        }
+        else {
+            return redirect("news");
+        }
+    }
+
+    public function _edit(Request $req){
+        $input = $req->input();
+
+        $img = $req->file("news_cover");
+        if(!is_null($img)){
+            $input["news_cover"] = curl_file_create($img->getRealPath(), $img->getClientMimeType(), $img->getClientOriginalName());
+        }
+
+        $id = $req->input("id");
+
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::put(Api::BASE_URL."/news/{$id}?auth_token=".$u->auth_token, [], $input);
+        return $res->body;
+    }
+
 }

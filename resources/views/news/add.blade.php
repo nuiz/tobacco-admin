@@ -31,14 +31,12 @@
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">หน้าปกข่าว</label>
-
                         <div class="col-sm-10">
                             <input type="file" name="news_cover" class="margin-none" id="news_cover-input" required="" accept="image/jpeg, image/png" />
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-sm-2 control-label">ภาพข่าวเพิ่มเติม</label>
-
                         <div class="col-sm-10">
                             <input type="file" class="margin-none" id="news_images-input" multiple accept="image/jpeg, image/png" />
                             <div class="help-block">อนุญาติเฉพาะนามสกุล jpeg,jpg,png</div>
@@ -47,9 +45,6 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <div>
-
-                            </div>
                             <div class="hidden" id="image-buffer-wrapper"></div>
                             <button type="submit" class="btn btn-primary">ตกลง</button> <a id="display-example-btn" class="btn btn-warning" href="">แสดงตัวอย่าง</a>
                         </div>

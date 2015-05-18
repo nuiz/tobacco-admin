@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Api;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Session;
 
 class NewsCTL extends Controller {
     public function __construct()
@@ -54,12 +55,25 @@ class NewsCTL extends Controller {
         /**
          * @var \Symfony\Component\HttpFoundation\File\UploadedFile $img
          */
-        $img = $req->file("news_image");
+        $img = $req->file("news_cover");
 
         $input = $req->input();
-        $input["news_image"] = curl_file_create($img->getRealPath(), $img->getClientMimeType(), $img->getClientOriginalName());
+        $input["news_cover"] = curl_file_create($img->getRealPath(), $img->getClientMimeType(), $img->getClientOriginalName());
 
-        $res = \Unirest\Request::post(Api::BASE_URL."/news?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        $images = $req->file("news_images");
+        $input["news_images"] = [];
+        if(!is_null($images) && count($images) > 0){
+            foreach($images as $key=> $file){
+                if(is_null($file))
+                    break;
+
+                $input["news_images"][$key] = curl_file_create($file->getRealPath(), $file->getClientMimeType(), $file->getClientOriginalName());
+            }
+        }
+
+        $u = Session::get("userlogin");
+
+        $res = \Unirest\Request::post(Api::BASE_URL."/news?auth_token=".$u->auth_token, [], $input);
         return $res->body;
     }
 }

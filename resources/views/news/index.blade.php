@@ -20,7 +20,7 @@
                     <!-- Table heading -->
                     <thead>
                     <tr>
-                        <th class="center"></th>
+                        <th class="center">วันที่สร้าง</th>
                         <th>ชื่อข่าว</th>
                         <th></th>
                     </tr>
@@ -30,8 +30,9 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php echo $item->news_id;?></th>
+                        <th class="center"><?php echo date('d/m/Y', strtotime($item->created_at));?></th>
                         <th><?php echo $item->news_name;?></th>
+                        <th><a class="edit-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">แก้ไข</a></th>
                         <th><a class="delete-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">ลบ</a></th>
                     </tr>
                     <?php }?>

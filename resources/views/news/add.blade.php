@@ -30,24 +30,19 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">ไฟล์รูปข่าว</label>
+                        <label class="col-sm-2 control-label">หน้าปกข่าว</label>
 
                         <div class="col-sm-10">
-                            <div class="fileupload fileupload-new margin-none" data-provides="fileupload">
-                                <div class="input-group">
-                                    <div class="form-control col-md-3">
-                                        <i class="fa fa-file fileupload-exists"></i>
-                                        <span class="fileupload-preview"></span>
-                                    </div>
-                                                <span class="input-group-btn">
-                                                <span class="btn btn-default btn-file">
-                                                <span class="fileupload-new">Select file</span>
-                                                <span class="fileupload-exists">Change</span>
-                                                <input type="file" name="news_image" class="margin-none" id="news_image-input" required="" />
-                                                </span><a href="#" class="btn fileupload-exists"
-                                                          data-dismiss="fileupload">Remove</a></span>
-                                </div>
-                            </div>
+                            <input type="file" name="news_cover" class="margin-none" id="news_cover-input" required="" accept="image/jpeg, image/png" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">ภาพข่าวเพิ่มเติม</label>
+
+                        <div class="col-sm-10">
+                            <input type="file" class="margin-none" id="news_images-input" multiple accept="image/jpeg, image/png" />
+                            <div class="help-block">อนุญาติเฉพาะนามสกุล jpeg,jpg,png</div>
+                            <div id="images-wrap"></div>
                         </div>
                     </div>
                     <div class="form-group">
@@ -92,6 +87,32 @@
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/farbtastic.min.js?v=v1.0.3-rc2&sv=v0.0.1.1");?>"></script>
     <script src="<?php echo URL::to("assets/components/common/forms/elements/colorpicker-farbtastic/assets/js/colorpicker-farbtastic.init.js?v=v1.0.3-rc2");?>"></script>
 
+    <style>
+        .img-thumb {
+            display: inline-block;
+            position: relative;
+        }
+
+        .img-thumb .img-thumb-img {
+            width: 75px;
+            height: 75px;
+            object-fit: cover;
+        }
+
+        .img-thumb .delete-btn {
+            cursor: pointer;
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 10px;
+        }
+
+        .img-thumb .glyphicons i:before {
+            font-size: 20px;
+            color: rgb(255, 91, 91);
+        }
+    </style>
+
     <script>
         $(function(){
             var URL = window.URL || window.webkitURL;
@@ -116,17 +137,19 @@
                 return (lastCharPosition ? text.substr(0, lastCharPosition+1) : '') + ellipseText;
             }
 
-            var $newsImageInput = $('#news_image-input');
+            var $newsCoverInput = $('#news_cover-input');
             var $imageBufferWrapper = $('#image-buffer-wrapper');
             var $exampleNewsBlock = $('#example-news-block');
             var $exampleNewsCover = $('#example-news-cover');
 
             $exampleNewsBlock.click(function(e){
                 e.preventDefault();
-                $exampleNewsBlock.hide();
+                if($(e.target).hasClass('lightbox-wrap')){
+                    $exampleNewsBlock.hide();
+                }
             });
 
-            $newsImageInput.change(function(e){
+            $newsCoverInput.change(function(e){
                 if(this.files.length == 0)
                     return;
 
@@ -136,6 +159,49 @@
                 $exampleNewsCover.css('background-image', 'url("'+fileURL+'")');
                 $imageBufferWrapper.empty();
             });
+
+            var news_images = [];
+            (function(news_images){
+                var $imagesInput = $('#news_images-input');
+                var $imagesWrap = $('#images-wrap');
+
+                var template = '<div class="img-thumb">'+
+                    '<div class="glyphicons circle_remove delete-btn"><i></i></div>'+
+                    '<img class="img-thumb-img" src="">'+
+                    '</div>';
+
+                $imagesInput.change(function(e){
+                    if(this.files.length == 0)
+                        return;
+
+                    $.each(this.files, function(index, file){
+                        var $el = $(template);
+                        var fileURL = URL.createObjectURL(file);
+                        $('.img-thumb-img', $el).attr('src', fileURL);
+                        $imagesWrap.append($el);
+
+                        var img = {
+                            file: file
+                        };
+
+                        var $deleteBtn = $('.delete-btn', $el);
+                        $deleteBtn.click(function(e){
+                            e.preventDefault();
+
+                            $el.remove();
+
+                            var index = news_images.indexOf(img);
+                            if (index > -1) {
+                                news_images.splice(index, 1);
+                            }
+                        });
+
+                        news_images.push(img);
+                    });
+
+                    $imagesInput.val('');
+                });
+            })(news_images);
 
             $('#display-example-btn').click(function(e){
                 e.preventDefault();
@@ -149,10 +215,15 @@
                 return false;
             });
 
+
             // form submit
             $('#addnews-form').submit(function(e){
                 e.preventDefault();
                 var fd = new FormData(this);
+
+                $.each(news_images, function(index, img){
+                    fd.append("news_images["+index+"]", img.file, img.file.name)
+                });
 
                 var inputs = $(":input", this);
                 inputs.prop("disabled", true);

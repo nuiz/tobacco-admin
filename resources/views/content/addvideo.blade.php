@@ -309,7 +309,7 @@
                 $video.attr('src', fileURL);
 
                 // delete btn
-                $deleteBtn = $wrap.find('.delete-btn');
+                var $deleteBtn = $wrap.find('.delete-btn');
                 $deleteBtn.click(function(e){
                     e.preventDefault();
 

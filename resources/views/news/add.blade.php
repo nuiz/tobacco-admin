@@ -48,10 +48,10 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div>
-                                <a id="display-example-btn" href="">แสดงตัวอย่าง</a>
+
                             </div>
                             <div class="hidden" id="image-buffer-wrapper"></div>
-                            <button type="submit" class="btn btn-primary">ตกลง</button>
+                            <button type="submit" class="btn btn-primary">ตกลง</button> <a id="display-example-btn" class="btn btn-warning" href="">แสดงตัวอย่าง</a>
                         </div>
                     </div>
                 </form>
@@ -91,6 +91,8 @@
         .img-thumb {
             display: inline-block;
             position: relative;
+            border: 1px solid rgb(187, 186, 255);
+            margin: 0 5px 5px 0;
         }
 
         .img-thumb .img-thumb-img {

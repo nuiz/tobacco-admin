@@ -76,4 +76,10 @@ class NewsCTL extends Controller {
         $res = \Unirest\Request::post(Api::BASE_URL."/news?auth_token=".$u->auth_token, [], $input);
         return $res->body;
     }
+
+    public function getEditbook(){
+        $req = Request::createFromGlobals();
+        $news = Api::get("/news/".$req->input("id"));
+        return view("news/edit", ["news"=> $news]);
+    }
 }

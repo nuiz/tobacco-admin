@@ -21,6 +21,7 @@
                     <thead>
                     <tr>
                         <th class="center">วันที่สร้าง</th>
+                        <th>ภาพหน้าปก</th>
                         <th>ชื่อข่าว</th>
                         <th></th>
                     </tr>
@@ -30,10 +31,13 @@
                     <tbody id="sortable-items">
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <th class="center"><?php echo date('d/m/Y', strtotime($item->created_at));?></th>
-                        <th><?php echo $item->news_name;?></th>
-                        <th><a class="edit-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">แก้ไข</a></th>
-                        <th><a class="delete-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">ลบ</a></th>
+                        <td class="center"><?php echo date('d/m/Y', strtotime($item->created_at));?></td>
+                        <td><img class="cover-thumb" src="<?php echo $item->news_cover_url;?>"></td>
+                        <td><?php echo $item->news_name;?></td>
+                        <td>
+                            <a class="edit-btn" href="<?php echo URL::to("news/edit?id={$item->news_id}");?>">แก้ไข</a> /
+                            <a class="delete-btn" href="<?php echo URL::to("news/delete?id={$item->news_id}");?>">ลบ</a>
+                        </td>
                     </tr>
                     <?php }?>
                     </tbody>
@@ -44,6 +48,13 @@
         </div>
     </div>
 
+    <style>
+        .cover-thumb {
+            width: 75px;
+            height: 50px;
+            object-fit: cover;
+        }
+    </style>
     <link rel="stylesheet" href="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/css/prettyPhoto.css");?>">
     <script src="<?php echo URL::to("/assets/components/common/gallery/prettyphoto/assets/lib/js/jquery.prettyPhoto.js");?>"></script>
     <script>

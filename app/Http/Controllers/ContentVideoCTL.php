@@ -11,6 +11,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Api;
 use App\Http\Requests\Request;
+use Illuminate\Support\Facades\Session;
 
 class ContentVideoCTL extends Controller {
     public function getIndex(){
@@ -44,7 +45,8 @@ class ContentVideoCTL extends Controller {
             $input["videos_thumb"][$key] = curl_file_create($video_thumb->getRealPath(), $video_thumb->getClientMimeType(), $video_thumb->getClientOriginalName());
         }
 
-        $res = \Unirest\Request::post(Api::BASE_URL."/content/{$content_id}/video?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::post(Api::BASE_URL."/content/{$content_id}/video?auth_token=".$u->auth_token, [], $input);
         return json_encode($res->body);
     }
 
@@ -57,7 +59,8 @@ class ContentVideoCTL extends Controller {
         $id = $req->input("id");
 
         $input = $req->input();
-        $res = \Unirest\Request::post(Api::BASE_URL."/content/video/{$id}/sort?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::post(Api::BASE_URL."/content/video/{$id}/sort?auth_token=".$u->auth_token, [], $input);
         return json_encode($res->body);
     }
 
@@ -69,7 +72,9 @@ class ContentVideoCTL extends Controller {
 
         $input = $req->input();
         $content_id = $input['content_id'];
-        $res = \Unirest\Request::post(Api::BASE_URL."/content/{$content_id}/video/sort?auth_token=74a500a2eee1b8274dae468ddb4892fb", [], $input);
+
+        $u = Session::get("userlogin");
+        $res = \Unirest\Request::post(Api::BASE_URL."/content/{$content_id}/video/sort?auth_token=".$u->auth_token, [], $input);
         return json_encode($res->body);
     }
 
@@ -80,11 +85,12 @@ class ContentVideoCTL extends Controller {
             $id = [$id];
         }
 
+        $u = Session::get("userlogin");
         $content_id = $req->input("content_id");
         $query = http_build_query([
             'list_id'=> $id,
             'content_id'=> $content_id,
-            'auth_token'=> "74a500a2eee1b8274dae468ddb4892fb"
+            'auth_token'=> $u->auth_token
         ]);
         $res = \Unirest\Request::delete(Api::BASE_URL."/content/{$content_id}/video?".$query);
 

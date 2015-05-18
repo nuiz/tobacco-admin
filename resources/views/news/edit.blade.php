@@ -33,6 +33,7 @@
                         <label class="col-sm-2 control-label">หน้าปกข่าว</label>
                         <div class="col-sm-10">
                             <input type="file" name="news_cover" class="margin-none" id="news_cover-input" accept="image/jpeg, image/png" /> <a id="clear-news_cover-input" href="">ลบ</a>
+                            <div class="help-block">หน้าปกข่าวเดิม</div>
                             <div>
                                 <img class="old-thumb" src="<?php echo $news->news_cover_url;?>" width="120" width="90" style="object-fit: cover;">
                             </div>
@@ -41,7 +42,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="hidden" id="image-buffer-wrapper"></div>
-                            <button type="submit" class="btn btn-primary">ตกลง</button> <a class="btn btn-info" href="">กลับหน้าข่าว</a> <a id="display-example-btn" class="btn btn-warning" href="">แสดงตัวอย่าง</a>
+                            <button type="submit" class="btn btn-primary">ตกลง</button> <a class="btn btn-warning" href="<?php echo URL::to("");?>/news">กลับไปยังรายการ</a> <a id="display-example-btn" class="btn btn-default" href="">แสดงตัวอย่าง</a>
                         </div>
                     </div>
                 </form>
@@ -54,8 +55,11 @@
         <div class="widget">
             <div class="widget-body innerAll inner-2x">
                 <form enctype="multipart/form-data" class="form-horizontal" id="add-images-form" role="form" method="post">
+                    <div>
+                        <progress id="upload-progress2" class="hidden" style="width: 100%" value="0" max="100"></progress>
+                    </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">รูปเดิม</label>
+                        <label class="col-sm-2 control-label">ภาพเดิม</label>
                         <div class="col-sm-10">
                             <div id="old-image-wrap"></div>
                         </div>
@@ -72,7 +76,7 @@
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <div class="hidden" id="image-buffer-wrapper"></div>
-                            <button type="submit" class="btn btn-primary">ตกลง</button>
+                            <button type="submit" class="btn btn-primary">upload</button>
                         </div>
                     </div>
                 </form>
@@ -216,18 +220,33 @@
                         '<img class="img-thumb-img" src="">'+
                         '</div>';
 
-                $.each(oldNews.news_images, function(index, value){
-                    var $el = $(template);
-                    $('.img-thumb-img', $el).attr('src', value.image_url);
 
-                    var $deleteBtn = $('.delete-btn', $el);
-                    $deleteBtn.click(function(e){
-                        e.preventDefault();
-                        $el.remove();
+                function dumpListImages(items){
+                    $.each(items, function(index, value){
+                        var $el = $(template);
+                        $('.img-thumb-img', $el).attr('src', value.image_url);
+
+                        var $deleteBtn = $('.delete-btn', $el);
+                        $deleteBtn.click(function(e){
+                            e.preventDefault();
+
+                            if(!window.confirm("ต้องการลบภาพนี้จริงหรือไม่")){
+                                return false;
+                            }
+
+                            $.get('<?php echo URL::to("");?>/news/removeimages?news_id='+oldNews.news_id+'&id='+value.id, function(data) {
+
+                            }, 'json');
+
+                            $el.remove();
+                        });
+
+                        $oldImageWrap.append($el);
                     });
+                }
 
-                    $oldImageWrap.append($el);
-                });
+                dumpListImages(oldNews.news_images);
+
 
                 $imagesInput.change(function(e){
                     if(this.files.length == 0)
@@ -270,6 +289,89 @@
                 var dText = $('#news_description').val();
                 dText = truncText(dText, 420);
                 $('#example-news-description').text(dText);
+
+                return false;
+            });
+
+            // form add image
+            $('#add-images-form').submit(function(e){
+                if(news_images.length==0)
+                    return false;
+
+                e.preventDefault();
+                var fd = new FormData();
+
+                $.each(news_images, function(index, img){
+                    fd.append("news_images["+index+"]", img.file, img.file.name)
+                });
+
+                var $progress = $('#upload-progress2');
+
+                $.ajax({
+                    type: 'POST',
+                    url: '<?php echo URL::to("");?>/news/images?id='+oldNews.news_id,
+                    data: fd,
+                    contentType: false,
+                    xhr: function()
+                    {
+                        $progress.removeClass("hidden");
+
+                        var xhr = new window.XMLHttpRequest();
+                        //Upload progress
+                        xhr.upload.addEventListener("progress", function(evt){
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = percentComplete * 100;
+                                $progress.val(percentComplete);
+                                //Do something with upload progress
+                            }
+                        }, false);
+                        //Download progress
+                        xhr.addEventListener("progress", function(evt){
+                            if (evt.lengthComputable) {
+                                var percentComplete = evt.loaded / evt.total;
+                                percentComplete = percentComplete * 100;
+                                $progress.attr('valut', percentComplete);
+                                //Do something with download progress
+                            }
+                        }, false);
+                        return xhr;
+                    },
+                    success: function(data){
+                        if(data.error == undefined){
+                            notyfy({
+                                text: 'Success',
+                                type: 'success',
+                                dismissQueue: true
+                            });
+                            //setTimeout(function(){ window.location.replace('<?php echo URL::to("news");?>'); }, 1000);
+                            setTimeout(function(){ window.location.reload(); }, 1000);
+                        }
+                        else {
+                            notyfy({
+                                text: 'No success',
+                                type: 'error',
+                                dismissQueue: true,
+                                timeout: 3000
+                            });
+                            inputs.prop("disabled", false);
+                            $progress.addClass("hidden");
+                        }
+                    },
+                    error: function(){
+                        notyfy({
+                            text: 'No success',
+                            type: 'error',
+                            dismissQueue: true,
+                            timeout: 3000
+                        });
+                        inputs.prop("disabled", false);
+                        $progress.addClass("hidden");
+                    },
+                    dataType: 'json',
+                    processData: false,
+                    newsType: false
+                });
 
                 return false;
             });

@@ -38,7 +38,7 @@
                     </div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">ตกลง</button> <a class="btn btn-warning" href="<?php echo URL::to("");?>/content">กลับไปยังรายการ</a>
                         </div>
                     </div>
                 </form>
@@ -54,7 +54,7 @@
             </div>
             <form class="form-horizontal" id="addvideo-form" role="form" method="post" enctype="multipart/form-data">
                 <div>
-                    <progress id="upload-progress" class="hidden" style="width: 100%" value="0" max="100"></progress>
+                    <progress id="upload-progress2" class="hidden" style="width: 100%" value="0" max="100"></progress>
                 </div>
                 <input type="hidden" name="content_id" value="<?php echo $content->content_id;?>">
                 <div class="form-group">
@@ -68,7 +68,7 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-primary">Submit</button>
+                        <button type="submit" class="btn btn-primary">Upload</button>
                     </div>
                 </div>
             </form>
@@ -222,7 +222,7 @@
 
                     // config max thumbnail
                     var iThumb = 0;
-                    var max = 8;
+                    var max = 4;
 
 
                     function setThumb(iThumb, duration){
@@ -322,7 +322,8 @@
                                 type: 'success',
                                 dismissQueue: true
                             });
-                            setTimeout(function(){ window.location.replace('<?php echo URL::to("content");?>'); }, 1000);
+                            //setTimeout(function(){ window.location.replace('<?php echo URL::to("content");?>'); }, 1000);\
+                            //setTimeout(function(){ window.location.reload(); }, 1000);
                         }
                         else {
                             notyfy({
@@ -356,6 +357,7 @@
     <script>
         $(function(){
             var tree = <?php echo json_encode($category_tree);?>;
+            var cat_id = <?php echo $content->category_id;?>;
             var $inputCategoryId = $('#category_id');
             var $wrapper = $('#category-wrapper');
             var $rootSelect = $('<select class="form-control"></select>');
@@ -444,6 +446,38 @@
             $wrapper.append($subSelect2);
 
             $rootSelect.change();
+
+            var j,k;
+            loop1:
+            for(i=0;i<tree.data.length;i++){
+                if(cat_id == tree.data[i].category_id){
+                    $rootSelect.val(cat_id);
+                    $rootSelect.change();
+                }
+                for(j=0;j<tree.data[i].children.length;j++){
+                    if(cat_id == tree.data[i].children[j].category_id){
+                        $rootSelect.val(tree.data[i].category_id);
+                        $rootSelect.change();
+
+                        $subSelect1.val(cat_id);
+                        $subSelect1.change();
+                        break loop1;
+                    }
+                    for(k=0;k<tree.data[i].children[j].children.length;k++){
+                        if(cat_id == tree.data[i].children[j].children[k].category_id){
+                            $rootSelect.val(tree.data[i].category_id);
+                            $rootSelect.change();
+
+                            $subSelect1.val(tree.data[i].children[j].category_id);
+                            $subSelect1.change();
+
+                            $subSelect2.val(cat_id);
+                            $subSelect2.change();
+                            break loop1;
+                        }
+                    }
+                }
+            }
         });
     </script>
     <script src="<?php echo URL::to("");?>/assets/components/modules/admin/notifications/notyfy/assets/lib/js/jquery.notyfy.js?v=v1.0.3-rc2&sv=v0.0.1.1"></script>

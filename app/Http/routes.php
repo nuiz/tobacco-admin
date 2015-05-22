@@ -28,5 +28,6 @@ Route::controllers([
 	'config'=> 'ConfigCTL',
 	'faq'=> 'FAQCTL',
 	'guru'=> 'GuruCTL',
-	'kmcenter'=> 'KmcenterCTL'
+	'kmcenter'=> 'KmcenterCTL',
+	'ip'=> 'IPCTL'
 ]);

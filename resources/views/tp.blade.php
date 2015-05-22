@@ -57,6 +57,7 @@
                 <li><a class="icon-question" href="<?php echo URL::to("/faq");?>"><i></i><span>เพิ่มคำถามที่พบบ่อย</span></a></li>
                 <li><a class="icon-user-1" href="<?php echo URL::to("/guru");?>"><i></i><span>ผู้เชี่ยวชาญ</span></a></li>
                 <li><a class="icon-user-1" href="<?php echo URL::to("/kmcenter");?>"><i></i><span>ศูนย์ KM</span></a></li>
+                <li><a class="icon-user-1" href="<?php echo URL::to("/ip");?>"><i></i><span>IP List</span></a></li>
             </ul>
         </div>
     </div>

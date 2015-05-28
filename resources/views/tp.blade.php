@@ -44,7 +44,8 @@
         <div id="sidebar-collapse-wrapper">
             <ul class="list-unstyled">
                 <?php if(in_array($u->level_id, [1])){?>
-                <li><a class="glyphicons user" href="<?php echo URL::to("/config");?>"><i></i><span>ตั้งค่าระบบ</span></a></li>
+                <!--<li><a class="glyphicons user" href="<?php echo URL::to("/config");?>"><i></i><span>ตั้งค่าระบบ</span></a></li>-->
+                <li><a class="icon-user-1" href="<?php echo URL::to("/ip");?>"><i></i><span>IP List</span></a></li>
                 <?php }?>
                 <?php if(in_array($u->level_id, [1, 2])){?>
                 <li><a class="glyphicons user" href="<?php echo URL::to("/usercluster");?>"><i></i><span>ผู้ใช้งาน(Cluster)</span></a></li>
@@ -57,7 +58,6 @@
                 <li><a class="icon-question" href="<?php echo URL::to("/faq");?>"><i></i><span>เพิ่มคำถามที่พบบ่อย</span></a></li>
                 <li><a class="icon-user-1" href="<?php echo URL::to("/guru");?>"><i></i><span>ผู้เชี่ยวชาญ</span></a></li>
                 <li><a class="icon-user-1" href="<?php echo URL::to("/kmcenter");?>"><i></i><span>ศูนย์ KM</span></a></li>
-                <li><a class="icon-user-1" href="<?php echo URL::to("/ip");?>"><i></i><span>IP List</span></a></li>
             </ul>
         </div>
     </div>

@@ -87,6 +87,7 @@
                         <th>ชื่อเนื้อหา</th>
                         <th>ประเภท</th>
                         <th>หมวดหมู่</th>
+                        <th>แบบทดสอบ</th>
                         <th></th>
                         <th></th>
                     </tr>
@@ -100,6 +101,9 @@
                         <td><?php echo $item->content_name;?></td>
                         <td><?php echo $item->content_type;?></td>
                         <td><?php echo $item->category_name;?></td>
+                        <td>
+                            <a href="<?php echo URL::to("content/exam?id={$item->content_id}");?>">จัดการแบบทดสอบ</a>
+                        </td>
                         <td>
                             <?php if($item->content_type=="video"){?>
 

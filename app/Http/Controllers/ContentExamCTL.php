@@ -49,4 +49,16 @@ class ContentExamCTL extends Controller {
 
         return redirect($redir);
     }
+
+    public function postEditquestion(){
+        $u = Session::get("userlogin");
+        $req = Request::createFromGlobals();
+
+        $input = $req->input();
+
+
+        $url = Api::BASE_URL."/content/exam/question/{$input["question_id"]}?auth_token=".$u->auth_token;
+        $res = \Unirest\Request::put($url, [], $input);
+        return json_encode($res->body);
+    }
 }

@@ -29,7 +29,7 @@
                             <!-- Table heading -->
                             <thead>
                             <tr>
-                                <th style="border-color: #3695d5; background-color: #3695d5;">ข้อถูก</th>
+                                <th style="border-color: #3695d5; background-color: #3695d5;">ข้อที่ถูก</th>
                                 <th style="border-color: #3695d5; background-color: #3695d5;">คำตอบ</th>
                             </tr>
                             </thead>
@@ -89,30 +89,73 @@
                     <tbody>
                     <?php foreach($items as $key=> $item){?>
                     <tr>
-                        <td><?php echo $item->question;?></td>
                         <td>
-                            <table class="table table-bordered table-primary">
-                                <!-- Table heading -->
-                                <thead>
-                                <tr>
-                                    <th style="border-color: #3695d5; background-color: #3695d5;">คำตอบ</th>
-                                    <th style="border-color: #3695d5; background-color: #3695d5;">ถูก/ผิด</th>
-                                </tr>
-                                </thead>
-                                <!-- // Table heading END -->
-                                <!-- Table body -->
-                                <tbody>
-                                <?php foreach($item->choices as $key2=> $item2){?>
-                                <tr class="<?php if($item2->is_answer==1) echo "success";?>">
-                                    <td><?php echo $item2->choice;?></td>
-                                    <td><?php echo $item2->is_answer? "ถูก": "ผิด";?></td>
-                                </tr>
-                                <?php }?>
-                                </tbody>
-                                <!-- // Table body END -->
-                            </table>
+                            <div class="display-question"><?php echo $item->question;?></div>
+                            <div class="form-edit-question" style="display: none;">
+                                <textarea class="question-textarea form-control"><?php echo $item->question;?></textarea>
+                                <input type="hidden" class="question_id" value="<?php echo $item->question_id;?>">
+                            </div>
                         </td>
                         <td>
+                            <div class="display-choice">
+                                <table class="table table-bordered table-primary">
+                                    <!-- Table heading -->
+                                    <thead>
+                                    <tr>
+                                        <th style="border-color: #3695d5; background-color: #3695d5;">ถูก/ผิด</th>
+                                        <th style="border-color: #3695d5; background-color: #3695d5;">คำตอบ</th>
+                                    </tr>
+                                    </thead>
+                                    <!-- // Table heading END -->
+                                    <!-- Table body -->
+                                    <tbody>
+                                    <?php foreach($item->choices as $key2=> $item2){?>
+                                    <tr class="<?php if($item2->is_answer==1) echo "success";?>">
+                                        <td><?php echo $item2->is_answer? "ถูก": "ผิด";?></td>
+                                        <td><?php echo $item2->choice;?></td>
+                                    </tr>
+                                    <?php }?>
+                                    </tbody>
+                                    <!-- // Table body END -->
+                                </table>
+                            </div>
+                            <div class="form-edit-choice" style="display: none;">
+                                <table class="table table-bordered table-primary">
+                                    <!-- Table heading -->
+                                    <thead>
+                                    <tr>
+                                        <th style="border-color: #3695d5; background-color: #3695d5;">ข้อที่ถูก</th>
+                                        <th style="border-color: #3695d5; background-color: #3695d5;">คำตอบ</th>
+                                    </tr>
+                                    </thead>
+                                    <!-- // Table heading END -->
+                                    <!-- Table body -->
+                                    <tbody>
+                                    <?php foreach($item->choices as $key2=> $item2){?>
+                                    <tr>
+                                        <td>
+                                            <input
+                                                type="radio"
+                                                name="answer[<?php echo $key;?>]"
+                                                value="<?php echo $key2;?>"
+                                                class="choice-radio"
+                                                <?php echo $item2->is_answer? "checked": "";?>>
+                                        </td>
+                                        <td>
+                                            <textarea class="choice-textarea form-control"><?php echo $item2->choice;?></textarea>
+                                            <input type="hidden" class="choice-id-val" value="<?php echo $item2->choice_id;?>">
+                                        </td>
+                                    </tr>
+                                    <?php }?>
+                                    </tbody>
+                                    <!-- // Table body END -->
+                                </table>
+                                <button class="submit-edit">แก้ไข</button>
+                                <button class="close-edit-btn">ปิด</button>
+                            </div>
+                        </td>
+                        <td>
+                            <a href="" class="edit-btn">edit</a>
                             <a href="<?php echo URL::to("exam/remove?question_id={$item->question_id}&content_id={$item->content_id}");?>" class="delete-btn">ลบ</a>
                         </td>
                     </tr>
@@ -143,6 +186,62 @@
                     e.preventDefault();
                     return false;
                 }
+            });
+
+            $('.edit-btn').click(function(e){
+                e.preventDefault();
+
+                var $tr = $(this).closest('tr');
+                var $display = $tr.find(".display-choice, .display-question");
+                var $form = $tr.find(".form-edit-choice, .form-edit-question");
+
+                $display.hide();
+                $form.show();
+
+                return false;
+            });
+
+            $('.close-edit-btn').click(function(e){
+                e.preventDefault();
+
+                var $tr = $(this).closest('tr');
+                var $display = $tr.find(".display-choice, .display-question");
+                var $form = $tr.find(".form-edit-choice, .form-edit-question");
+
+                $form.hide();
+                $display.show();
+
+                return false;
+            });
+
+            $('.submit-edit').click(function(e){
+                e.preventDefault();
+
+                var $tr = $(this).closest('tr');
+                var q = {};
+                q.question_id = $tr.find('.question_id').val();
+                q.question = $tr.find('.question-textarea').val();
+                q.choices = [];
+
+                var ansIndex = $tr.find('.choice-radio:checked').val();
+
+                $tr.find('.choice-textarea').each(function(index, el){
+                    var $tr2 = $(el).closest('tr');
+                    var c = {
+                        choice_id: $tr2.find('.choice-id-val').val(),
+                        choice: $(el).val(),
+                        is_answer: ansIndex==index? 1: 0
+                    };
+                    q.choices.push(c);
+                });
+
+                $tr.find("textarea,input").prop("disabled", true);
+                $.post("<?php echo URL::to("/");?>/exam/editquestion", q, function(data){
+                    console.log(data);
+                    //$tr.find("textarea,input").prop("disabled", false);
+                    window.location.reload();
+                }, 'json');
+                return false;
             });
 
             // form submit
